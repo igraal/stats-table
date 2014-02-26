@@ -4,6 +4,7 @@ namespace IgraalOSL\StatsTable\Aggregation;
 
 use IgraalOSL\StatsTable\Dumper\FormatInterface;
 use IgraalOSL\StatsTable\StatsTableBuilder;
+use IgraalOSL\StatsTable\Tools\ArrayTools;
 
 /**
  * Class AverageAggregation
@@ -22,7 +23,7 @@ class AverageAggregation implements AggregationInterface
 
     public function aggregate(StatsTableBuilder $statsTable)
     {
-        $column = array_column($statsTable->getColumn($this->columnName)->getValues(), $this->columnName);
+        $column = ArrayTools::array_column($statsTable->getColumn($this->columnName)->getValues(), $this->columnName);
         $sum = array_sum($column);
         $count = count($column);
 
