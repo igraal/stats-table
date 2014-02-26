@@ -1,5 +1,5 @@
 {
-    "name": "iGraal Stats Table Library",
+    "name": "igraal/stats-table",
     "description": "Helper to handle stats table with multiple formatter",
     "homepage": "https://github.com/igraal/stats-table",
     "type": "library",
