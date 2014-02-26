@@ -1,0 +1,23 @@
+{
+    "name": "iGraal Stats Table Library",
+    "description": "Helper to handle stats table with multiple formatter",
+    "homepage": "https://github.com/igraal/stats-table",
+    "type": "library",
+    "license": "LGPL",
+    "keywords": ["PHP", "stats", "statistics", "excel", "csv", "json", "xls"],
+    "authors": [
+        {
+            "name": "iGraal",
+            "homepage": "http://www.igraal.com/"
+        }
+    ],
+    "autoload": {
+        "psr-0": {"": "lib"}
+    },
+    "require": {
+        "phpoffice/phpexcel": "*@stable"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    }
+}
