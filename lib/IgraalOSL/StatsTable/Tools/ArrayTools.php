@@ -2,6 +2,9 @@
 
 namespace IgraalOSL\StatsTable\Tools;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ArrayTools
 {
     /**
