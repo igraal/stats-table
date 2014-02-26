@@ -228,4 +228,12 @@ class StatsTableBuilder
 
         return $result;
     }
+
+    /**
+     * @return StatsColumnBuilder[]
+     */
+    public function getColumns()
+    {
+        return $this->columns;
+    }
 }
