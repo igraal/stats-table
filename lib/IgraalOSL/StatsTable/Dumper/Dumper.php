@@ -21,35 +21,35 @@ abstract class Dumper implements DumperInterface
     {
         switch ($format)
         {
-            case FormatInterface::DATE:
+            case Format::DATE:
                 if ($value instanceof \DateTime) {
                     return $value->format('Y-m-d');
                 }
                 break;
 
-            case FormatInterface::DATETIME:
+            case Format::DATETIME:
                 if ($value instanceof \DateTime) {
                     return $value->format('Y-m-d H:i:s');
                 }
                 break;
 
-            case FormatInterface::FLOAT2:
+            case Format::FLOAT2:
                 return sprintf("%.2f", $value);
 
-            case FormatInterface::INTEGER:
+            case Format::INTEGER:
                 return sprintf("%d", $value);
 
-            case FormatInterface::PCT:
-                return $this->formatValue(FormatInterface::INTEGER, $value)." %";
+            case Format::PCT:
+                return $this->formatValue(Format::INTEGER, $value)." %";
 
-            case FormatInterface::PCT2:
-                return $this->formatValue(FormatInterface::FLOAT2, $value)." %";
+            case Format::PCT2:
+                return $this->formatValue(Format::FLOAT2, $value)." %";
 
-            case FormatInterface::MONEY:
-                return $this->formatValue(FormatInterface::INTEGER, $value)." €";
+            case Format::MONEY:
+                return $this->formatValue(Format::INTEGER, $value)." €";
 
-            case FormatInterface::MONEY2:
-                return $this->formatValue(FormatInterface::FLOAT2, $value)." €";
+            case Format::MONEY2:
+                return $this->formatValue(Format::FLOAT2, $value)." €";
         }
 
         return $value;

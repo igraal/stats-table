@@ -3,7 +3,7 @@
 namespace Tests\Aggregation;
 
 use IgraalOSL\StatsTable\Aggregation\AverageAggregation;
-use IgraalOSL\StatsTable\Dumper\FormatInterface;
+use IgraalOSL\StatsTable\Dumper\Format;
 
 class AverageAggregationTest extends AggregationTestAbstract
 {
@@ -11,7 +11,7 @@ class AverageAggregationTest extends AggregationTestAbstract
     {
         $statsTable = $this->getSampleTable();
 
-        $format = FormatInterface::FLOAT2;
+        $format = Format::FLOAT2;
         $hitsAverage = new AverageAggregation('hits', $format);
         $this->assertEquals(20, $hitsAverage->aggregate($statsTable));
         $this->assertEquals($format, $hitsAverage->getFormat());

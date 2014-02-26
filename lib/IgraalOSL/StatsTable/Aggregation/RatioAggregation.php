@@ -2,7 +2,7 @@
 
 namespace IgraalOSL\StatsTable\Aggregation;
 
-use IgraalOSL\StatsTable\Dumper\FormatInterface;
+use IgraalOSL\StatsTable\Dumper\Format;
 use IgraalOSL\StatsTable\StatsTableBuilder;
 
 class RatioAggregation implements AggregationInterface
@@ -11,7 +11,7 @@ class RatioAggregation implements AggregationInterface
     private $overInternalName;
     private $format;
 
-    function __construct($overInternalName, $valueInternalName, $format = FormatInterface::PCT2)
+    function __construct($overInternalName, $valueInternalName, $format = Format::PCT2)
     {
         $this->valueInternalName = $valueInternalName;
         $this->overInternalName = $overInternalName;

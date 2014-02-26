@@ -2,7 +2,7 @@
 
 namespace IgraalOSL\StatsTable\Dumper;
 
-interface FormatInterface
+class Format
 {
     const DATE     = 'date';
     const DATETIME = 'datetime';
@@ -13,10 +13,4 @@ interface FormatInterface
     const PCT      = 'percent';
     const PCT2     = 'percent2';
     const STRING   = 'string';
-
-    /**
-     * @param  string $type
-     * @return boolean
-     */
-    public function supports($type);
 }

@@ -2,7 +2,7 @@
 
 namespace IgraalOSL\StatsTable\Aggregation;
 
-use IgraalOSL\StatsTable\Dumper\FormatInterface;
+use IgraalOSL\StatsTable\Dumper\Format;
 use IgraalOSL\StatsTable\StatsTableBuilder;
 use IgraalOSL\StatsTable\Tools\ArrayTools;
 
@@ -15,7 +15,7 @@ class SumAggregation implements AggregationInterface
     private $columnName;
     private $format;
 
-    public function __construct($columnName, $format = FormatInterface::INTEGER)
+    public function __construct($columnName, $format = Format::INTEGER)
     {
         $this->columnName = $columnName;
     }

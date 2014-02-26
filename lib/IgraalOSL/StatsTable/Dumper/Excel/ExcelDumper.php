@@ -3,7 +3,7 @@
 namespace IgraalOSL\StatsTable\Dumper\Excel;
 
 use IgraalOSL\StatsTable\Dumper\Dumper;
-use IgraalOSL\StatsTable\Dumper\FormatInterface;
+use IgraalOSL\StatsTable\Dumper\Format;
 use IgraalOSL\StatsTable\StatsTable;
 
 class ExcelDumper extends Dumper
@@ -243,7 +243,7 @@ class ExcelDumper extends Dumper
     {
         $col = 0;
         foreach ($values as $index => $value) {
-            $this->applyValue($sheet, $col, $row, $value, array_key_exists($index, $formats) ? $formats[$index] : FormatInterface::STRING, $styleArray);
+            $this->applyValue($sheet, $col, $row, $value, array_key_exists($index, $formats) ? $formats[$index] : Format::STRING, $styleArray);
             $col++;
         }
     }
@@ -269,40 +269,40 @@ class ExcelDumper extends Dumper
 
         switch ($format)
         {
-            case FormatInterface::DATE:
+            case Format::DATE:
                 $date = new \DateTime($value);
                 $value = \PHPExcel_Shared_Date::PHPToExcel($date);
                 $style->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDD2);
                 break;
 
-            case FormatInterface::DATETIME:
+            case Format::DATETIME:
                 $date = new \DateTime($value);
                 $value = \PHPExcel_Shared_Date::PHPToExcel($date);
                 $style->getNumberFormat()->setFormatCode(self::FORMAT_DATETIME);
                 break;
 
-            case FormatInterface::FLOAT2:
+            case Format::FLOAT2:
                 $style->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                 break;
 
-            case FormatInterface::INTEGER:
+            case Format::INTEGER:
                 $style->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
                 break;
 
-            case FormatInterface::MONEY:
-            case FormatInterface::MONEY2:
+            case Format::MONEY:
+            case Format::MONEY2:
                 $style->getNumberFormat()->setFormatCode(self::FORMAT_EUR);
                 break;
 
-            case FormatInterface::PCT:
+            case Format::PCT:
                 $style->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE);
                 break;
 
-            case FormatInterface::PCT2:
+            case Format::PCT2:
                 $style->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE_00);
                 break;
 
-            case FormatInterface::STRING:
+            case Format::STRING:
                 $style->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
                 break;
         }

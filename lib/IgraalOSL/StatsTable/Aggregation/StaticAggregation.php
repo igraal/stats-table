@@ -2,7 +2,7 @@
 
 namespace IgraalOSL\StatsTable\Aggregation;
 
-use IgraalOSL\StatsTable\Dumper\FormatInterface;
+use IgraalOSL\StatsTable\Dumper\Format;
 use IgraalOSL\StatsTable\StatsTableBuilder;
 
 /**
@@ -14,7 +14,7 @@ class StaticAggregation implements AggregationInterface
     private $value;
     private $format;
 
-    public function __construct($value, $format = FormatInterface::STRING)
+    public function __construct($value, $format = Format::STRING)
     {
         $this->value = $value;
         $this->format = $format;

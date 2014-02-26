@@ -3,7 +3,7 @@
 namespace Tests\Dumper;
 
 use IgraalOSL\StatsTable\Dumper\Excel\ExcelDumper;
-use IgraalOSL\StatsTable\Dumper\FormatInterface;
+use IgraalOSL\StatsTable\Dumper\Format;
 use IgraalOSL\StatsTable\StatsTable;
 
 class ExcelTest extends DumperTestAbstract
@@ -16,11 +16,11 @@ class ExcelTest extends DumperTestAbstract
             array('date' => '2014-01-01', 'hits' => '20', 'subscribers' => 7, 'ratio' => .35, 'revenues' => 80.754),
         );
         $dataTypes = array(
-            'date' => FormatInterface::DATE,
-            'hits' => FormatInterface::INTEGER,
-            'subscribers' => FormatInterface::INTEGER,
-            'ratio' => FormatInterface::PCT2,
-            'revenues' => FormatInterface::MONEY2,
+            'date' => Format::DATE,
+            'hits' => Format::INTEGER,
+            'subscribers' => Format::INTEGER,
+            'ratio' => Format::PCT2,
+            'revenues' => Format::MONEY2,
         );
 
         $aggregations = array(
@@ -32,8 +32,8 @@ class ExcelTest extends DumperTestAbstract
         );
 
         $aggregationsTypes = $dataTypes;
-        $aggregationsTypes['date'] = FormatInterface::STRING;
-        $aggregationsTypes['ratio'] = FormatInterface::PCT;
+        $aggregationsTypes['date'] = Format::STRING;
+        $aggregationsTypes['ratio'] = Format::PCT;
 
         $statsTable = new StatsTable($data, $headers, $aggregations, $dataTypes, $aggregationsTypes);
         $excelDumper = new ExcelDumper();
@@ -43,8 +43,8 @@ class ExcelTest extends DumperTestAbstract
         $excelContents = $excelDumper->dump($statsTable);
         file_put_contents('/tmp/test.xls', $excelContents);
 
-        $dataTypes['date'] = FormatInterface::DATETIME;
-        $dataTypes['revenues'] = FormatInterface::FLOAT2;
+        $dataTypes['date'] = Format::DATETIME;
+        $dataTypes['revenues'] = Format::FLOAT2;
         $statsTable = new StatsTable($data, $headers, $aggregations, $dataTypes, $aggregationsTypes);
         $excelDumper->setOptions(array(ExcelDumper::OPTION_ZEBRA => false));
         $excelContents = $excelDumper->dump($statsTable);
