@@ -9,7 +9,7 @@ class CallbackColumnBuilder implements DynamicColumnBuilderInterface
     /** @var callable */
     private $callback;
 
-    function __construct($callback)
+    public function __construct($callback)
     {
         $this->callback = $callback;
     }

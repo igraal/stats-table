@@ -33,4 +33,3 @@ class StaticAggregation implements AggregationInterface
         return $this->format;
     }
 }
- 

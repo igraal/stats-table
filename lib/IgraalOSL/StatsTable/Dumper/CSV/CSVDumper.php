@@ -30,33 +30,33 @@ class CSVDumper extends Dumper
 
     public function dump(StatsTable $statsTable)
     {
-        $fp = fopen('php://temp', 'w');
+        $fileHandler = fopen('php://temp', 'w');
 
         if ($this->enableHeaders) {
-            $this->writeLine($fp, $statsTable->getHeaders());
+            $this->writeLine($fileHandler, $statsTable->getHeaders());
         }
 
         foreach ($statsTable->getData() as $line) {
-            $this->writeLine($fp, $line, $statsTable->getDataFormats());
+            $this->writeLine($fileHandler, $line, $statsTable->getDataFormats());
         }
 
         if ($this->enableAggregation) {
-            $this->writeLine($fp, $statsTable->getAggregations(), $statsTable->getAggregationsFormats());
+            $this->writeLine($fileHandler, $statsTable->getAggregations(), $statsTable->getAggregationsFormats());
         }
 
-        $len = ftell($fp);
-        fseek($fp, 0, SEEK_SET);
+        $len = ftell($fileHandler);
+        fseek($fileHandler, 0, SEEK_SET);
 
-        return fread($fp, $len);
+        return fread($fileHandler, $len);
     }
 
-    private function writeLine($fp, $line, $formats = array())
+    private function writeLine($fileHandler, $line, $formats = array())
     {
         foreach ($formats as $index => $format) {
             if (array_key_exists($index, $line)) {
                 $line[$index] = $this->formatValue($format, $line[$index]);
             }
         }
-        fputcsv($fp, $line, $this->delimiter, $this->enclosure);
+        fputcsv($fileHandler, $line, $this->delimiter, $this->enclosure);
     }
 }

@@ -11,7 +11,7 @@ class RatioAggregation implements AggregationInterface
     private $overInternalName;
     private $format;
 
-    function __construct($overInternalName, $valueInternalName, $format = Format::PCT2)
+    public function __construct($overInternalName, $valueInternalName, $format = Format::PCT2)
     {
         $this->valueInternalName = $valueInternalName;
         $this->overInternalName = $overInternalName;

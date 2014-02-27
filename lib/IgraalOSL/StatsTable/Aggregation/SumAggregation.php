@@ -18,6 +18,7 @@ class SumAggregation implements AggregationInterface
     public function __construct($columnName, $format = Format::INTEGER)
     {
         $this->columnName = $columnName;
+        $this->format = $format;
     }
 
     public function aggregate(StatsTableBuilder $statsTable)
