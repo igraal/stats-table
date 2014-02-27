@@ -88,7 +88,6 @@ class ExcelDumper extends Dumper
             $this->applyValues($sheet, $row, $statsTable->getAggregations(), $statsTable->getAggregationsFormats(), $this->getAggregationsStyleArray());
         }
 
-
         // FINAL FORMATTING //
         for ($col = 0; $col < $width; $col++) {
             $sheet
@@ -267,8 +266,7 @@ class ExcelDumper extends Dumper
         $style = new \PHPExcel_Style();
         $style->applyFromArray($styleArray);
 
-        switch ($format)
-        {
+        switch ($format) {
             case Format::DATE:
                 $date = new \DateTime($value);
                 $value = \PHPExcel_Shared_Date::PHPToExcel($date);

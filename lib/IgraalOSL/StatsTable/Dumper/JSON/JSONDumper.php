@@ -13,7 +13,6 @@ class JSONDumper extends Dumper
             'data' => $statsTable->getData(),
         );
 
-
         if ($this->enableHeaders) {
             $result['headers'] = $statsTable->getHeaders();
         }

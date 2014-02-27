@@ -46,12 +46,13 @@ class StatsColumnBuilder
     }
 
     /**
-     * @param $headerName
+     * @param  $headerName
      * @return $this
      */
     public function setHeaderName($headerName)
     {
         $this->headerName = $headerName;
+
         return $this;
     }
 
@@ -64,12 +65,13 @@ class StatsColumnBuilder
     }
 
     /**
-     * @param AggregationInterface $aggregation
+     * @param  AggregationInterface $aggregation
      * @return $this
      */
     public function setAggregation(AggregationInterface $aggregation)
     {
         $this->aggregation = $aggregation;
+
         return $this;
     }
 
@@ -88,10 +90,10 @@ class StatsColumnBuilder
      */
     public function insureIsFilled($indexes, $defaultValue)
     {
+        $newValues = array();
         foreach ($indexes as $index) {
-            if (empty($this->values[$index])) {
-                $this->values[$index] = $defaultValue;
-            }
+            $newValues[$index] = array_key_exists($index, $this->values) ? $this->values[$index] : $defaultValue;
         }
+        $this->values = $newValues;
     }
 }

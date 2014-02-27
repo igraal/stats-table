@@ -53,6 +53,8 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
             new StatsColumnBuilder($wishedColumn, 'hits'),
             $statsTable->getColumn('hits')
         );
+
+        $this->assertEquals(array_keys($wishedColumn), array_keys($statsTable->getColumn('hits')->getValues()));
     }
 
     public function testAddIndexAsColumn()

@@ -19,8 +19,7 @@ abstract class Dumper implements DumperInterface
 
     protected function formatValue($format, $value)
     {
-        switch ($format)
-        {
+        switch ($format) {
             case Format::DATE:
                 if ($value instanceof \DateTime) {
                     return $value->format('Y-m-d');

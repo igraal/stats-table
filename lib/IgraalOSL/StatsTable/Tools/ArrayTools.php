@@ -27,6 +27,7 @@ class ArrayTools
                 $value = $line[$column_key];
                 $result[$key] = $value;
             }
+
             return $result;
         }
     }

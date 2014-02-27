@@ -14,7 +14,7 @@ class StatsTableBuilder
     private $indexes;
 
     /**
-     * @param $table
+     * @param array $table
      * @param array $headers
      * @param array $formats
      * @param array $aggregations
@@ -67,11 +67,11 @@ class StatsTableBuilder
     }
 
     /**
-     * @param array $table
-     * @param string[] $headers
-     * @param string[] $formats
+     * @param array                  $table
+     * @param string[]               $headers
+     * @param string[]               $formats
      * @param AggregationInterface[] $aggregations
-     * @param string[] $columnNames
+     * @param string[]               $columnNames
      */
     public function appendTable($table, $headers, $formats, $aggregations, $columnNames = array())
     {
@@ -110,10 +110,10 @@ class StatsTableBuilder
     /**
      * Returns an associative table only with selected column.
      * Fill with default value if column not in a row
-     * @param  array $table
+     * @param  array  $table
      * @param  string $columnName
-     * @param  mixed $defaultValue
-     * @return array The column
+     * @param  mixed  $defaultValue
+     * @return array  The column
      */
     public function getAssocColumn($table, $columnName, $defaultValue = null)
     {
@@ -131,7 +131,6 @@ class StatsTableBuilder
 
     /**
      * Retrieve a column
-     * @param  string $columnName
      * @return StatsColumnBuilder
      * @throws \InvalidArgumentException
      */
@@ -146,7 +145,7 @@ class StatsTableBuilder
 
     /**
      * Add a dynamic column
-     * @param string                        $columnName
+     * @param mixed                         $columnName
      * @param DynamicColumnBuilderInterface $dynamicColumn
      * @param string                        $header
      * @param string                        $format
@@ -160,7 +159,7 @@ class StatsTableBuilder
 
     /**
      * Build the data
-     * @param  array $columns Desired columns
+     * @param  array      $columns Desired columns
      * @return StatsTable
      */
     public function build($columns = array())

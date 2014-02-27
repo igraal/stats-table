@@ -4,7 +4,6 @@ namespace IgraalOSL\StatsTable\Aggregation;
 
 use IgraalOSL\StatsTable\Dumper\Format;
 use IgraalOSL\StatsTable\StatsTableBuilder;
-use IgraalOSL\StatsTable\Tools\ArrayTools;
 
 /**
  * Class AverageAggregation

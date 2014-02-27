@@ -31,4 +31,3 @@ class RatioColumnBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($ratioColumn, $statsTable->getColumn('ratio'));
     }
 }
- 
