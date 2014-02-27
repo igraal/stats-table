@@ -84,18 +84,14 @@ class StatsColumnBuilder
     /**
      * Ensure column is filled with given indexes. If not, it will be filled with default values
      * @param $indexes
-     * @param $defaultValues
+     * @param $defaultValue
      */
-    public function insureIsFilled($indexes, $defaultValues)
+    public function insureIsFilled($indexes, $defaultValue)
     {
         foreach ($indexes as $index) {
             if (empty($this->values[$index])) {
-                $this->values[$index] = $defaultValues;
+                $this->values[$index] = $defaultValue;
             }
-        }
-
-        foreach ($this->values as $index => $values) {
-            $this->values[$index] = array_merge($defaultValues, $values);
         }
     }
 }

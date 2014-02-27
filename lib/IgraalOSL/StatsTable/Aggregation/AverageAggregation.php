@@ -23,7 +23,7 @@ class AverageAggregation implements AggregationInterface
 
     public function aggregate(StatsTableBuilder $statsTable)
     {
-        $column = ArrayTools::array_column($statsTable->getColumn($this->columnName)->getValues(), $this->columnName);
+        $column = $statsTable->getColumn($this->columnName)->getValues();
         $sum = array_sum($column);
         $count = count($column);
 

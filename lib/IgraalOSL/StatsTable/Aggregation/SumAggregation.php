@@ -24,7 +24,7 @@ class SumAggregation implements AggregationInterface
     public function aggregate(StatsTableBuilder $statsTable)
     {
         $column = $statsTable->getColumn($this->columnName)->getValues();
-        return array_sum(ArrayTools::array_column($column, $this->columnName));
+        return array_sum($column);
     }
 
     /**

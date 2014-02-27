@@ -23,7 +23,7 @@ class CallbackColumnBuilder implements DynamicColumnBuilderInterface
             $line = array();
             foreach ($statsTable->getColumns() as $columnName => $column) {
                 $columnValues = $column->getValues();
-                $line = array_merge($line, $columnValues[$index]);
+                $line = array_merge($line, array($columnName => $columnValues[$index]));
             }
             $values[$index] = call_user_func_array($this->callback, array($line));
         }

@@ -51,7 +51,7 @@ class StatsTableBuilder
     {
         $values = array();
         foreach ($this->indexes as $index) {
-            $values[$index] = array($columnName => $index);
+            $values[$index] = $index;
         }
 
         $column = new StatsColumnBuilder(
@@ -88,7 +88,7 @@ class StatsTableBuilder
             );
 
             if (count($this->defaultValues)) {
-                $column->insureIsFilled($this->indexes, $this->defaultValues);
+                $column->insureIsFilled($this->indexes, $this->defaultValues[$columnName]);
             }
 
             $this->columns[$columnName] = $column;
@@ -120,9 +120,9 @@ class StatsTableBuilder
         $values = array();
         foreach ($table as $key => $line) {
             if (array_key_exists($columnName, $line)) {
-                $values[$key] = array($columnName => $line[$columnName]);
+                $values[$key] = $line[$columnName];
             } else {
-                $values[$key] = array($columnName => $defaultValue);
+                $values[$key] = $defaultValue;
             }
         }
 
@@ -155,9 +155,6 @@ class StatsTableBuilder
     public function addDynamicColumn($columnName, DynamicColumnBuilderInterface $dynamicColumn, $header = '', $format = null, AggregationInterface $aggregation = null)
     {
         $values = $dynamicColumn->buildColumnValues($this);
-        foreach ($values as $key => $value) {
-            $values[$key] = array($columnName => $value);
-        }
         $this->columns[$columnName] = new StatsColumnBuilder($values, $header, $format, $aggregation);
     }
 
@@ -180,7 +177,7 @@ class StatsTableBuilder
             $line = array();
             foreach ($columnsNames as $columnName) {
                 $columnValues = $this->columns[$columnName]->getValues();
-                $line = array_merge($line, $columnValues[$index]);
+                $line = array_merge($line, array($columnName => $columnValues[$index]));
             }
 
             $data[$index] = $this->orderColumns($line, $columns);

@@ -23,9 +23,9 @@ class RatioColumnBuilderTest extends \PHPUnit_Framework_TestCase
         $statsTable->addDynamicColumn('ratio', $ratioBuilder, 'Ratio');
 
         $ratioData = array(
-            '2014-01-01' => array('ratio' => .5),
-            '2014-01-02' => array('ratio' => .3),
-            '2014-01-03' => array('ratio' => 'N/A')
+            '2014-01-01' => .5,
+            '2014-01-02' => .3,
+            '2014-01-03' => 'N/A'
         );
         $ratioColumn = new StatsColumnBuilder($ratioData, 'Ratio');
         $this->assertEquals($ratioColumn, $statsTable->getColumn('ratio'));

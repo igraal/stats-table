@@ -10,7 +10,7 @@ class StatsColumnBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $aggregationMock = $this->getMock('IgraalOSL\StatsTable\Aggregation\AggregationInterface');
 
-        $values = array(array('hits' => 3), array('hits' => 5));
+        $values = array(3, 5);
         $column = new StatsColumnBuilder($values, 'Hits', 'format', $aggregationMock);
 
         $this->assertEquals($values, $column->getValues());
@@ -21,12 +21,12 @@ class StatsColumnBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testEnsureIndexExists()
     {
-        $values = array('2014-01-01' => array('hits' => 3), '2014-01-03' => array('hits' => 5));
+        $values = array('2014-01-01' => 3, '2014-01-03' => 5);
         $column = new StatsColumnBuilder($values);
 
-        $column->insureIsFilled(array('2014-01-01', '2014-01-02', '2014-01-03'), array('hits' => 0));
+        $column->insureIsFilled(array('2014-01-01', '2014-01-02', '2014-01-03'), 0);
 
-        $values['2014-01-02'] = array('hits' => 0);
+        $values['2014-01-02'] = 0;
 
         $this->assertEquals($values, $column->getValues());
     }
@@ -35,7 +35,7 @@ class StatsColumnBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $aggregationMock = $this->getMock('IgraalOSL\StatsTable\Aggregation\AggregationInterface');
 
-        $values = array(array('hits' => 3), array('hits' => 5));
+        $values = array(3, 5);
         $column = new StatsColumnBuilder($values, 'Hits');
 
         $column->setHeaderName('Hits2');

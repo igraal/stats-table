@@ -30,8 +30,4 @@ class JSONTest extends DumperTestAbstract
             'data' => $this->getData(),
         ), json_decode($jsonDumper->dump($this->getStatsTable()), true));
     }
-
-    public function testFormats()
-    {
-    }
 }

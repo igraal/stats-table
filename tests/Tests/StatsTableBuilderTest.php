@@ -21,7 +21,7 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
             array('hits' => 'Hits', 'subscribers' => 'Subscribers')
         );
 
-        $this->assertEquals(new StatsColumnBuilder(array(array('hits' => 12), array('hits' => 25)), 'Hits'), $statsTable->getColumn('hits'));
+        $this->assertEquals(new StatsColumnBuilder(array(12, 25), 'Hits'), $statsTable->getColumn('hits'));
     }
 
     public function testAdditionalIndexes()
@@ -33,8 +33,11 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
 
         $defaultValues = array('hits' => 0);
 
-        $wishedTable = $table;
-        $wishedTable['2014-01-02'] = $defaultValues;
+        $wishedColumn = array(
+            '2014-01-01' => 12,
+            '2014-01-02' => 0,
+            '2014-01-03' => 14,
+        );
 
         $statsTable = new StatsTableBuilder(
             $table,
@@ -43,11 +46,11 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
             array(),
             array(),
             $defaultValues,
-            array_keys($wishedTable)
+            array_keys($wishedColumn)
         );
 
         $this->assertEquals(
-            new StatsColumnBuilder($wishedTable, 'hits'),
+            new StatsColumnBuilder($wishedColumn, 'hits'),
             $statsTable->getColumn('hits')
         );
     }
@@ -63,8 +66,8 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
         $statsTable->addIndexesAsColumn('date', 'Date');
 
         $dateColumn = new StatsColumnBuilder(array(
-                '2014-01-01' => array('date' => '2014-01-01'),
-                '2014-01-03' => array('date' => '2014-01-03')
+                '2014-01-01' => '2014-01-01',
+                '2014-01-03' => '2014-01-03'
             ), 'Date');
 
         $this->assertEquals($dateColumn, $statsTable->getColumn('date'));
@@ -126,10 +129,12 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
             $defaultValues
         );
 
-        $wishedTable = $table;
-        $wishedTable['2014-01-03']['hits'] = 0;
+        $wishedColumn = array(
+            '2014-01-01' => 12,
+            '2014-01-03' => 0
+        );
 
-        $this->assertEquals(new StatsColumnBuilder($wishedTable, 'Hits'), $statsTable->getColumn('hits'));
+        $this->assertEquals(new StatsColumnBuilder($wishedColumn, 'Hits'), $statsTable->getColumn('hits'));
     }
 
     /**
