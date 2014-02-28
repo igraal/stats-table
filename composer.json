@@ -24,6 +24,7 @@
         "squizlabs/php_codesniffer": "2.0.*@dev"
     },
     "require": {
-        "phpoffice/phpexcel": "*@stable"
+        "phpoffice/phpexcel": "*@stable",
+        "php": ">=5.3.3"
     }
 }
