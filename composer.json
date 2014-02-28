@@ -3,7 +3,7 @@
     "description": "Helper to handle stats table with multiple formatter",
     "homepage": "https://github.com/igraal/stats-table",
     "type": "library",
-    "license": "LGPL",
+    "license": "MIT",
     "keywords": ["PHP", "stats", "statistics", "excel", "csv", "json", "xls"],
     "authors": [
         {
