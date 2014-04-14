@@ -1,0 +1,25 @@
+<table>
+    <thead>
+        <tr>
+            {% for key, name in statsTable.headers %}
+                <th class="stats-table-{{ key }}">{{ name }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for line in statsTable.data %}
+            <tr>
+                {% for key, value in line %}
+                    <td class="stats-table-{{ key }}">{{ value }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            {% for key, value in statsTable.aggregations %}
+                <th class="stats-table-{{ key }}">{{ value }}</th>
+            {% endfor %}
+        </tr>
+    </tfoot>
+</table>

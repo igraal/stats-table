@@ -21,7 +21,8 @@
         "phpoffice/phpexcel": "*@stable",
         "phpunit/phpunit": "3.7.*",
         "phpmd/phpmd": "*@dev",
-        "squizlabs/php_codesniffer": "2.0.*@dev"
+        "squizlabs/php_codesniffer": "2.0.*@dev",
+        "twig/twig": "1.x@stable"
     },
     "require": {
         "phpoffice/phpexcel": "*@stable",
