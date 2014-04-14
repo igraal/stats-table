@@ -268,13 +268,21 @@ class ExcelDumper extends Dumper
 
         switch ($format) {
             case Format::DATE:
-                $date = new \DateTime($value);
+                if (!($value instanceof \DateTime)) {
+                    $date = new \DateTime($value);
+                } else {
+                    $date = $value;
+                }
                 $value = \PHPExcel_Shared_Date::PHPToExcel($date);
                 $style->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDD2);
                 break;
 
             case Format::DATETIME:
-                $date = new \DateTime($value);
+                if (!($value instanceof \DateTime)) {
+                    $date = new \DateTime($value);
+                } else {
+                    $date = $value;
+                }
                 $value = \PHPExcel_Shared_Date::PHPToExcel($date);
                 $style->getNumberFormat()->setFormatCode(self::FORMAT_DATETIME);
                 break;

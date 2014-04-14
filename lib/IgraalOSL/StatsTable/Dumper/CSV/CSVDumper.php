@@ -4,6 +4,7 @@ namespace IgraalOSL\StatsTable\Dumper\CSV;
 
 use IgraalOSL\StatsTable\Dumper\Dumper;
 use IgraalOSL\StatsTable\StatsTable;
+use IgraalOSL\StatsTable\Tools\ParameterBag;
 
 class CSVDumper extends Dumper
 {
@@ -12,11 +13,12 @@ class CSVDumper extends Dumper
     private $delimiter;
     private $enclosure;
 
-    public function __construct($delimiter = ',', $enclosure = '"', $locale = '')
+    public function __construct(array $options = array())
     {
-        $this->delimiter = $delimiter;
-        $this->enclosure = $enclosure;
-        $this->locale = $locale;
+        $bag = new ParameterBag($options);
+        $this->delimiter = $bag->get('delimiter', ',');
+        $this->enclosure = $bag->get('enclosure', '"');
+        $this->locale    = $bag->get('locale', '');
     }
 
     /**
