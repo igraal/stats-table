@@ -2,7 +2,7 @@
 
 namespace IgraalOSL\StatsTable\Tools;
 
-class ParameterBag implements \Iterator
+class ParameterBag
 {
     /**
      * @var array The parameter bag
@@ -56,42 +56,5 @@ class ParameterBag implements \Iterator
     public function toArray()
     {
         return $this->bag;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function current()
-    {
-        return current($this->bag);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function key()
-    {
-        return key($this->bag);
-    }
-
-    /**
-     * @return mixed|void
-     */
-    public function next()
-    {
-        return next($this->bag);
-    }
-
-    /**
-     * @return bool|void
-     */
-    public function rewind()
-    {
-        return rewind($this->bag);
-    }
-
-    public function valid()
-    {
-        return $this->key($this->bag) === null;
     }
 }
