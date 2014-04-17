@@ -23,4 +23,9 @@ class JSONDumper extends Dumper
 
         return json_encode($result);
     }
+
+    public function getMimeType()
+    {
+        return 'application/json';
+    }
 }

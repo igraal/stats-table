@@ -316,4 +316,9 @@ class ExcelDumper extends Dumper
         $sheet->setCellValueByColumnAndRow($col, $row, $value);
         $sheet->duplicateStyle($style, \PHPExcel_Cell::stringFromColumnIndex($col).$row);
     }
+
+    public function getMimeType()
+    {
+        return 'application/vnd.ms-office; charset=binary';
+    }
 }

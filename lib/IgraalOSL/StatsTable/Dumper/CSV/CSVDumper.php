@@ -12,6 +12,7 @@ class CSVDumper extends Dumper
     private $locale;
     private $delimiter;
     private $enclosure;
+    private $charset;
 
     public function __construct(array $options = array())
     {
@@ -19,6 +20,7 @@ class CSVDumper extends Dumper
         $this->delimiter = $bag->get('delimiter', ',');
         $this->enclosure = $bag->get('enclosure', '"');
         $this->locale    = $bag->get('locale', '');
+        $this->charset   = $bag->get('charset', 'utf-8');
     }
 
     /**
@@ -60,5 +62,10 @@ class CSVDumper extends Dumper
             }
         }
         fputcsv($fileHandler, $line, $this->delimiter, $this->enclosure);
+    }
+
+    public function getMimeType()
+    {
+        return sprintf('text/csv; charset=%s', $this->charset);
     }
 }

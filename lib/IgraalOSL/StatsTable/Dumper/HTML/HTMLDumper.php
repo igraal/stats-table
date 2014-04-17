@@ -40,4 +40,9 @@ class HTMLDumper extends Dumper
     {
         return 'statsTable.html.twig';
     }
+
+    public function getMimeType()
+    {
+        return 'text/html; charset=utf-8';
+    }
 }
