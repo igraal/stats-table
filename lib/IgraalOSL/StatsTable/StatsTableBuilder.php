@@ -200,7 +200,7 @@ class StatsTableBuilder
         $headers = $this->orderColumns($headers, $columns);
         $aggregations = $this->orderColumns($aggregations, $columns);
 
-        return new StatsTable($data, $headers, $aggregations);
+        return new StatsTable($data, $headers, $aggregations, $dataFormats, $aggregationsFormats);
     }
 
     /**

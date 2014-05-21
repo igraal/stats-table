@@ -7,16 +7,30 @@ abstract class Dumper implements DumperInterface
     protected $enableHeaders = true;
     protected $enableAggregation = true;
 
+    /**
+     * Enable headers
+     * @param bool $enableHeaders
+     */
     public function enableHeaders($enableHeaders = true)
     {
         $this->enableHeaders = $enableHeaders;
     }
 
+    /**
+     * Enable aggregation
+     * @param bool $enableAggregation
+     */
     public function enableAggregation($enableAggregation = true)
     {
         $this->enableAggregation = $enableAggregation;
     }
 
+    /**
+     * Default value formatter
+     * @param $format
+     * @param $value
+     * @return string
+     */
     protected function formatValue($format, $value)
     {
         switch ($format) {
