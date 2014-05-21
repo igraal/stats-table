@@ -3,6 +3,7 @@
 namespace Tests;
 
 use IgraalOSL\StatsTable\Aggregation\SumAggregation;
+use IgraalOSL\StatsTable\Dumper\Format;
 use IgraalOSL\StatsTable\StatsColumnBuilder;
 use IgraalOSL\StatsTable\StatsTable;
 use IgraalOSL\StatsTable\StatsTableBuilder;
@@ -86,7 +87,7 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
         $statsTable = new StatsTableBuilder(
             $table,
             array('hits' => 'Hits'),
-            array(),
+            array('hits'=>Format::INTEGER),
             array('hits' => new SumAggregation('hits'))
         );
 
@@ -94,7 +95,9 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
         $this->assertEquals(new StatsTable(
             $table,
             array('hits' => 'Hits'),
-            array('hits' => 26)
+            array('hits' => 26),
+            array('hits'=>Format::INTEGER),
+            array('hits'=>Format::INTEGER)
         ), $stats);
 
         // Test build without aggregation
@@ -109,7 +112,8 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
         $this->assertEquals(new StatsTable(
             $table,
             array('hits' => 'Hits'),
-            array('hits' => null)
+            array('hits' => null),
+            array('hits'=>  null)
         ), $stats);
     }
 
