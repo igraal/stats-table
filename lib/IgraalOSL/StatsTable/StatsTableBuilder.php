@@ -14,16 +14,21 @@ class StatsTableBuilder
     private $indexes;
 
     /**
-     * @param array $table
+     * @param $table
      * @param array $headers
      * @param array $formats
      * @param array $aggregations
      * @param array $columnNames
      * @param array $defaultValues
-     * @param array $indexes
+     * @param null $indexes
+     * @throws \InvalidArgumentException
      */
     public function __construct($table, $headers = array(), $formats = array(), $aggregations = array(), $columnNames = array(), array $defaultValues = array(), $indexes = null)
     {
+        if (count($table) === 0) {
+            throw new \InvalidArgumentException('The data array "$table" pass to StatsTableBuilder cannot be empty');
+        }
+
         $this->columns = array();
 
         if (null !== $indexes) {
@@ -47,6 +52,12 @@ class StatsTableBuilder
         return $this->indexes;
     }
 
+    /**
+     * @param $columnName
+     * @param null $headerName
+     * @param null $format
+     * @param AggregationInterface $aggregation
+     */
     public function addIndexesAsColumn($columnName, $headerName = null, $format = null, AggregationInterface $aggregation = null)
     {
         $values = array();
@@ -200,7 +211,7 @@ class StatsTableBuilder
         $headers = $this->orderColumns($headers, $columns);
         $aggregations = $this->orderColumns($aggregations, $columns);
 
-        return new StatsTable($data, $headers, $aggregations);
+        return new StatsTable($data, $headers, $aggregations, $dataFormats, $aggregationsFormats);
     }
 
     /**

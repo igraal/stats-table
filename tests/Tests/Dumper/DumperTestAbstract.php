@@ -3,6 +3,7 @@
 namespace Tests\Dumper;
 
 use IgraalOSL\StatsTable\Aggregation\StaticAggregation;
+use IgraalOSL\StatsTable\Dumper\Format;
 use IgraalOSL\StatsTable\StatsTableBuilder;
 
 class DumperTestAbstract extends \PHPUnit_Framework_TestCase
@@ -22,6 +23,11 @@ class DumperTestAbstract extends \PHPUnit_Framework_TestCase
         return array('hits' => 'Hits');
     }
 
+    public function getFormats()
+    {
+        return array('hits' => Format::INTEGER);
+    }
+
     public function getAggregations()
     {
         return array('hits' => new StaticAggregation('value'));
@@ -29,7 +35,7 @@ class DumperTestAbstract extends \PHPUnit_Framework_TestCase
 
     public function getStatsTableBuilder()
     {
-        return new StatsTableBuilder($this->getData(), $this->getHeaders(), array(), $this->getAggregations());
+        return new StatsTableBuilder($this->getData(), $this->getHeaders(), $this->getFormats(), $this->getAggregations());
     }
 
     public function getStatsTable()
