@@ -95,17 +95,14 @@ class ExcelDumper extends Dumper
                 ->setAutoSize(true);
         }
 
-        $fileHandler = fopen('php://temp', 'w');
-        $xlsDumper = new \PHPExcel_Writer_Excel5($excel);
-        $xlsDumper->save($fileHandler);
+        $xlsDumper = new \PHPExcel_Writer_Excel2007($excel);
+        $pFilename = @tempnam(\PHPExcel_Shared_File::sys_get_temp_dir(), 'phpxltmp');
+        $xlsDumper->save($pFilename);
+        $contents = file_get_contents($pFilename);
+        @unlink($pFilename);
 
         unset($excel);
         unset($xlsDumper);
-
-        $len = ftell($fileHandler);
-        fseek($fileHandler, 0, SEEK_SET);
-
-        $contents = fread($fileHandler, $len);
 
         return $contents;
     }
