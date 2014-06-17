@@ -63,14 +63,19 @@ class JSONDumper extends Dumper
                 if ($value instanceof \DateTime) {
                     return $value->format('c');
                 }
+                break;
 
             case Format::FLOAT2:
-            case Format::PCT2:
             case Format::MONEY2:
                 return floatval(sprintf("%.2f", $value));
 
-            case Format::INTEGER:
+            case Format::PCT2:
+                return floatval(sprintf('%.2f', $value*100));
+
             case Format::PCT:
+                return intval(sprintf('%d', $value*100));
+
+            case Format::INTEGER:
             case Format::MONEY:
                 return intval(sprintf("%d", $value));
         }
