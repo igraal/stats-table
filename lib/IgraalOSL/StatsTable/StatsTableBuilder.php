@@ -3,6 +3,8 @@
 namespace IgraalOSL\StatsTable;
 
 use IgraalOSL\StatsTable\Aggregation\AggregationInterface;
+use IgraalOSL\StatsTable\Aggregation\StaticAggregation;
+use IgraalOSL\StatsTable\Dumper\Format;
 use IgraalOSL\StatsTable\DynamicColumn\DynamicColumnBuilderInterface;
 
 class StatsTableBuilder
@@ -53,6 +55,8 @@ class StatsTableBuilder
     }
 
     /**
+     * Add index of data as a new column
+     *
      * @param $columnName
      * @param null $headerName
      * @param null $format
@@ -78,14 +82,25 @@ class StatsTableBuilder
     }
 
     /**
+     * Append columns given a table
+     *
      * @param array                  $table
      * @param string[]               $headers
      * @param string[]               $formats
      * @param AggregationInterface[] $aggregations
      * @param string[]               $columnNames
+     * @param mixed[]                $defaultValues
      */
-    public function appendTable($table, $headers, $formats, $aggregations, $columnNames = array())
-    {
+    public function appendTable(
+        $table,
+        $headers,
+        $formats,
+        $aggregations,
+        $columnNames = array(),
+        $defaultValues = array()
+    ) {
+        $this->defaultValues = array_merge($this->defaultValues, $defaultValues);
+
         if (count($columnNames) === 0) {
             $columnNames = array_keys(reset($table));
         }
@@ -242,5 +257,94 @@ class StatsTableBuilder
     public function getColumns()
     {
         return $this->columns;
+    }
+
+    /**
+     * Do a groupBy on columns, using aggregations to aggregate data per line
+     *
+     * @param string|array $columns        Columns to aggregate
+     * @param array        $excludeColumns Irrelevant columns to exclude
+     *
+     * @return StatsTableBuilder
+     */
+    public function groupBy($columns, array $excludeColumns = array())
+    {
+        $groupedData = array();
+        $statsTable = $this->build();
+
+        foreach ($statsTable->getData() as $line) {
+            $key = join(
+                '-_##_-',
+                array_map(
+                    function ($c) use ($line) {
+                        return $line[$c];
+                    },
+                    $columns
+                )
+            );
+
+            $groupedData[$key][] = $line;
+        }
+
+        $filterLine = function ($line) use ($excludeColumns) {
+            foreach ($excludeColumns as $c) {
+                unset($line[$c]);
+            }
+
+            return $line;
+        };
+
+        $headers = $filterLine(
+            array_map(
+                function (StatsColumnBuilder $c) {
+                    return $c->getHeaderName();
+                },
+                $this->columns
+            )
+        );
+        $formats = $filterLine(
+            array_map(
+                function (StatsColumnBuilder $c) {
+                    return $c->getFormat();
+                },
+                $this->columns
+            )
+        );
+        $aggregations = $filterLine(
+            array_map(
+                function (StatsColumnBuilder $c) {
+                    return $c->getAggregation();
+                },
+                $this->columns
+            )
+        );
+
+        $data = array();
+
+        foreach ($groupedData as $lines) {
+            $tmpAggregations = $aggregations;
+            // Add static aggragation for group by fields
+            foreach ($columns as $column) {
+                $oneLine = current($lines);
+                $value = $oneLine[$column];
+                $tmpAggregations[$column] = new StaticAggregation($value, Format::STRING);
+            }
+
+            $tmpTableBuilder = new StatsTableBuilder(
+                array_map($filterLine, $lines),
+                $headers,
+                $formats,
+                $tmpAggregations
+            );
+            $tmpTable = $tmpTableBuilder->build();
+            $data[] = $tmpTable->getAggregations();
+        }
+
+        return new StatsTableBuilder(
+            $data,
+            $headers,
+            $formats,
+            $aggregations
+        );
     }
 }

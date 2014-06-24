@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use IgraalOSL\StatsTable\Aggregation\StaticAggregation;
 use IgraalOSL\StatsTable\Aggregation\SumAggregation;
 use IgraalOSL\StatsTable\Dumper\Format;
 use IgraalOSL\StatsTable\StatsColumnBuilder;
@@ -162,5 +163,47 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedTable, StatsTableBuilder::orderColumns($table, array('c', 'a')));
 
         $this->assertEquals($table, StatsTableBuilder::orderColumns($table, array()));
+    }
+
+    public function testGroupBy()
+    {
+        $table = array(
+            array('tag' => 'one', 'subtag' => 'morning', 'hits' => 2),
+            array('tag' => 'one', 'subtag' => 'afternoon', 'hits' => 3),
+            array('tag' => 'two', 'subtag' => 'morning', 'hits' => 4),
+        );
+        $statsTableBuilder = new StatsTableBuilder(
+            $table,
+            array('tag' => 'Tag', 'subtag' => 'When', 'hits' => 'Hits'),
+            array('tag' => Format::STRING, 'subtag' => Format::STRING, 'hits' => Format::INTEGER),
+            array(
+                'tag' => new StaticAggregation('Tag'),
+                'subtag' => new StaticAggregation('Sub tag'),
+                'hits' => new SumAggregation('hits', Format::INTEGER)
+            )
+        );
+
+        $groupedByStatsTableBuilder = $statsTableBuilder->groupBy(array('tag'), array('subtag'));
+
+        $this->assertEquals(2, count($groupedByStatsTableBuilder->getColumns()));
+
+        $this->assertEquals(
+            array('one', 'two'),
+            $groupedByStatsTableBuilder->getColumn('tag')->getValues()
+        );
+
+        $this->assertEquals(
+            array(5, 4),
+            $groupedByStatsTableBuilder->getColumn('hits')->getValues()
+        );
+
+        $this->assertEquals(
+            'Tag',
+            $groupedByStatsTableBuilder->getColumn('tag')->getAggregation()->aggregate($groupedByStatsTableBuilder)
+        );
+        $this->assertEquals(
+            9,
+            $groupedByStatsTableBuilder->getColumn('hits')->getAggregation()->aggregate($groupedByStatsTableBuilder)
+        );
     }
 }
