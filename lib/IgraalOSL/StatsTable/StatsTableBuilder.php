@@ -245,7 +245,9 @@ class StatsTableBuilder
         // Order
         $result = array();
         foreach ($columns as $column) {
-            $result[$column] = $table[$column];
+            if (array_key_exists($column, $table)) {
+                $result[$column] = $table[$column];
+            }
         }
 
         return $result;

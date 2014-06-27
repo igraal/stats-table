@@ -165,6 +165,31 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
         $this->assertEquals($table, StatsTableBuilder::orderColumns($table, array()));
     }
 
+    public function testBuildWithOrder()
+    {
+        $table = array(
+            array('a' => 'a', 'b' => 'b', 'c' => 'c'),
+            array('a' => 'A', 'b' => 'B', 'c' => 'C'),
+        );
+        $headers = array(
+            'a' => 'Alpha',
+            'b' => 'Bravo',
+            'c' => 'Charly'
+        );
+
+        $statsTableBuilder = new StatsTableBuilder(
+            $table,
+            $headers,
+            array(Format::STRING, Format::STRING)
+        );
+
+        $statsTable = $statsTableBuilder->build(array('c', 'a'));
+        $this->assertEquals(
+            array('c' => 'Charly', 'a' => 'Alpha'),
+            $statsTable->getHeaders()
+        );
+    }
+
     public function testGroupBy()
     {
         $table = array(
