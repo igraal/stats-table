@@ -79,12 +79,13 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
 
     public function testBuild()
     {
-        // Test build with aggregation
+        // Data of test
         $table = array(
             '2014-01-01' => array('hits' => 12),
             '2014-01-03' => array('hits' => 14)
         );
 
+        /* START - Test build with aggregation - START */
         $statsTable = new StatsTableBuilder(
             $table,
             array('hits' => 'Hits'),
@@ -100,8 +101,10 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
             array('hits'=>Format::INTEGER),
             array('hits'=>Format::INTEGER)
         ), $stats);
+        /* END - Test build with aggregation - END */
 
-        // Test build without aggregation
+
+        /* START - Test build without aggregation - START */
         $statsTable = new StatsTableBuilder(
             $table,
             array('hits' => 'Hits'),
@@ -116,6 +119,44 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
             array('hits' => null),
             array('hits'=>  null)
         ), $stats);
+        /* END - Test build without aggregation - END */
+
+
+        /* START - Test build without data - START */
+        $statsTable = new StatsTableBuilder(
+            array(),
+            array('hits' => 'Hits'),
+            array(),
+            array()
+        );
+
+        $stats = $statsTable->build();
+        $this->assertEquals(new StatsTable(
+            array(),
+            array('hits' => 'Hits'),
+            array('hits' => null),
+            array('hits'=>  null)
+        ), $stats);
+        /* END - Test build without data - END */
+
+
+        /* START - Test build with aggregation and without data - START */
+        $statsTable = new StatsTableBuilder(
+            array(),
+            array('hits' => 'Hits'),
+            array('hits'=>Format::INTEGER),
+            array('hits' => new SumAggregation('hits'))
+        );
+
+        $stats = $statsTable->build();
+        $this->assertEquals(new StatsTable(
+            array(),
+            array('hits' => 'Hits'),
+            array('hits' => 0),
+            array('hits'=>Format::INTEGER),
+            array('hits'=>Format::INTEGER)
+        ), $stats);
+        /* END - Test build with aggregation and without data - END */
     }
 
     public function testMissingColumn()

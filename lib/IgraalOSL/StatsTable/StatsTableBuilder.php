@@ -27,10 +27,6 @@ class StatsTableBuilder
      */
     public function __construct($table, $headers = array(), $formats = array(), $aggregations = array(), $columnNames = array(), array $defaultValues = array(), $indexes = null)
     {
-        if (count($table) === 0) {
-            throw new \InvalidArgumentException('The data array "$table" pass to StatsTableBuilder cannot be empty');
-        }
-
         $this->columns = array();
 
         if (null !== $indexes) {
@@ -101,8 +97,12 @@ class StatsTableBuilder
     ) {
         $this->defaultValues = array_merge($this->defaultValues, $defaultValues);
 
-        if (count($columnNames) === 0) {
+        if (count($columnNames) === 0 && count($table) !== 0) {
             $columnNames = array_keys(reset($table));
+        }
+
+        if (count($columnNames) === 0 && count($headers) !== 0) {
+            $columnNames = array_keys($headers);
         }
 
         foreach ($columnNames as $columnName) {
