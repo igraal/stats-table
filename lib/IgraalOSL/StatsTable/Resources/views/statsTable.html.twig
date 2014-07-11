@@ -1,25 +1,26 @@
-<table>
+<table class="clear table table-striped table-hover table-condensed">
     <thead>
-        <tr>
-            {% for key, name in statsTable.headers %}
-                <th class="stats-table-{{ key }}">{{ name }}</th>
-            {% endfor %}
-        </tr>
+    <tr>
+        {% for key, name in statsTable.headers %}
+            <th class="stats-table-{{ key }}">{{ name }}</th>
+        {% endfor %}
+    </tr>
     </thead>
     <tbody>
-        {% for line in statsTable.data %}
-            <tr>
-                {% for key, value in line %}
-                    <td class="stats-table-{{ key }}">{{ value }}</td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-    </tbody>
-    <tfoot>
+    {% for line in statsTable.data %}
         <tr>
-            {% for key, value in statsTable.aggregations %}
-                <th class="stats-table-{{ key }}">{{ value }}</th>
+            {% for key, value in line %}
+                <td class="stats-table-{{ key }}">{{ value }}</td>
             {% endfor %}
         </tr>
+    {% endfor %}
+    </tbody>
+
+    <tfoot class="footer-stats-table">
+    <tr class="success">
+        {% for key, value in statsTable.aggregations %}
+            <th class="stats-table-{{ key }}">{{ value }}</th>
+        {% endfor %}
+    </tr>
     </tfoot>
 </table>

@@ -77,17 +77,21 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
         $this->assertEquals($dateColumn, $statsTable->getColumn('date'));
     }
 
-    public function testBuild()
+
+    private function _getTestData()
     {
         // Data of test
-        $table = array(
+        return array(
             '2014-01-01' => array('hits' => 12),
             '2014-01-03' => array('hits' => 14)
         );
+    }
 
-        /* START - Test build with aggregation - START */
+    public function testBuildWithAggregation()
+    {
+        $data = $this->_getTestData();
         $statsTable = new StatsTableBuilder(
-            $table,
+            $data,
             array('hits' => 'Hits'),
             array('hits'=>Format::INTEGER),
             array('hits' => new SumAggregation('hits'))
@@ -95,18 +99,19 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
 
         $stats = $statsTable->build();
         $this->assertEquals(new StatsTable(
-            $table,
+            $data,
             array('hits' => 'Hits'),
             array('hits' => 26),
             array('hits'=>Format::INTEGER),
             array('hits'=>Format::INTEGER)
         ), $stats);
-        /* END - Test build with aggregation - END */
+    }
 
-
-        /* START - Test build without aggregation - START */
+    public function testBuildWithoutAggregation()
+    {
+        $data = $this->_getTestData();
         $statsTable = new StatsTableBuilder(
-            $table,
+            $data,
             array('hits' => 'Hits'),
             array(),
             array()
@@ -114,15 +119,15 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
 
         $stats = $statsTable->build();
         $this->assertEquals(new StatsTable(
-            $table,
+            $data,
             array('hits' => 'Hits'),
             array('hits' => null),
             array('hits'=>  null)
         ), $stats);
-        /* END - Test build without aggregation - END */
+    }
 
-
-        /* START - Test build without data - START */
+    public function testBuildWithoutData()
+    {
         $statsTable = new StatsTableBuilder(
             array(),
             array('hits' => 'Hits'),
@@ -137,10 +142,10 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
             array('hits' => null),
             array('hits'=>  null)
         ), $stats);
-        /* END - Test build without data - END */
+    }
 
-
-        /* START - Test build with aggregation and without data - START */
+    public function testBuildWithoutDataAndWithAggregation()
+    {
         $statsTable = new StatsTableBuilder(
             array(),
             array('hits' => 'Hits'),
@@ -156,7 +161,6 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
             array('hits'=>Format::INTEGER),
             array('hits'=>Format::INTEGER)
         ), $stats);
-        /* END - Test build with aggregation and without data - END */
     }
 
     public function testMissingColumn()
