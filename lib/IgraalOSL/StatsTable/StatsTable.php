@@ -2,6 +2,8 @@
 
 namespace IgraalOSL\StatsTable;
 
+use IgraalOSL\StatsTable\Dumper\Format;
+
 class StatsTable
 {
     private $headers;
@@ -121,6 +123,95 @@ class StatsTable
             if (array_key_exists($k, $columnsMap)) {
                 unset($line[$k]);
             }
+        }
+    }
+
+    /**
+     * Sort stats table by one column
+     * @param string $columnName Name of column
+     * @param bool $asc Sort direction : TRUE=>Ascending, FALSE=>Descending
+     * @return StatsTable
+     */
+    public function sortColumn($columnName, $asc = true)
+    {
+        $this->sortMultipleColumn(array($columnName=>$asc));
+        return $this;
+    }
+
+    /**
+     * Sort stats table by one column with a custom compare function
+     * @param string $columnName Name of column
+     * @param function $compareFunc Custom compare function that should return 0, -1 or 1.
+     * @return StatsTable
+     */
+    public function uSortColumn($columnName, $compareFunc)
+    {
+        $this->uSortMultipleColumn(array($columnName=>$compareFunc));
+        return $this;
+    }
+
+    /**
+     * Sort stats table by multiple column
+     * @param array $columns Associative array : KEY=> column name (string), VALUE=> Sort direction (boolean)
+     * @return $this
+     */
+    public function sortMultipleColumn($columns)
+    {
+        $compareFuncList = array();
+        foreach($columns as $colName=>$asc)
+        {
+            $columnFormat = array_key_exists($colName, $this->dataFormats) ? $this->dataFormats[$colName] : Format::STRING;
+            $compareFuncList[$colName] = $this->_getFunctionForFormat($columnFormat, $asc);
+        }
+
+        $this->uSortMultipleColumn($compareFuncList);
+        return $this;
+    }
+
+    /**
+     * Sort stats table by multiple column with a custom compare function
+     * @param $columns $columns Associative array : KEY=> column name (string), VALUE=> Custom function (function)
+     * @return $this
+     */
+    public function uSortMultipleColumn($columns)
+    {
+        $dataFormats = $this->dataFormats;
+        $sort = function($a, $b) use ($columns, $dataFormats)
+        {
+            foreach($columns as $colName=>$fn) {
+                $tmp = $fn($a[$colName], $b[$colName]);
+                if($tmp !== 0) {
+                    return $tmp;
+                }
+            }
+            return 0;
+        };
+
+        uasort($this->data, $sort);
+        return $this;
+    }
+
+    private function _getFunctionForFormat($format, $asc)
+    {
+        $genericFunc = function($a, $b) use($asc)
+        {
+            if ($a == $b) {
+                return 0;
+            }
+            return ($a < $b) ? ($asc ? -1 : 1) : ($asc ? 1 : -1);
+        };
+
+        $stringCmp = function($a, $b) use($asc)
+        {
+            $tmp = strcmp($a, $b);
+            return $asc ? $tmp : -$tmp;
+        };
+
+
+        if(Format::STRING == $format) {
+            return $stringCmp;
+        } else {
+            return $genericFunc;
         }
     }
 }
