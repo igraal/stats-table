@@ -15,6 +15,16 @@ class HTMLDumper extends Dumper
     protected $template;
 
     /**
+     * @var string
+     */
+    protected $templateFolder;
+
+    /**
+     * @var array
+     */
+    protected $templateOptions;
+
+    /**
      * @var \Twig_Environment
      */
     protected $twig;
@@ -24,7 +34,9 @@ class HTMLDumper extends Dumper
         $options = new ParameterBag($options);
 
         $this->template = $options->get('template', $this->getDefaultTemplate());
-        $this->twig     = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__.'/../../Resources/views'));
+        $this->templateFolder = $options->get('templateFolder', $this->getDefaultTemplateFolder());
+        $this->twig     = new \Twig_Environment(new \Twig_Loader_Filesystem($this->templateFolder));
+        $this->templateOptions = $options->get('templateOptions',array());
     }
 
     public function setTwig(\Twig_Environment $twig)
@@ -63,10 +75,12 @@ class HTMLDumper extends Dumper
         $data = $formatCollection($data, $format);
         $aggregations = $formatLine($aggregations, $aggregationsFormats);
 
-        return $this->twig->render($this->template,
-                                   array('headers'      => $statsTable->getHeaders(),
-                                         'data'         => $data,
-                                         'aggregations' => $aggregations));
+        $params = array('headers'      => $statsTable->getHeaders(),
+                        'data'         => $data,
+                        'aggregations' => $aggregations);
+
+        $params = array_merge($params, $this->templateOptions);
+        return $this->twig->render($this->template, $params);
     }
 
     /**
@@ -115,6 +129,11 @@ class HTMLDumper extends Dumper
         }
 
         return $value;
+    }
+
+    protected function getDefaultTemplateFolder()
+    {
+        return __DIR__.'/../../Resources/views';
     }
 
     protected function getDefaultTemplate()

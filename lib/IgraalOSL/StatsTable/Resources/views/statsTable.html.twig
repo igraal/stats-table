@@ -1,4 +1,4 @@
-<table class="clear table table-striped table-hover table-condensed">
+<table class="stats-table">
     <thead>
     <tr>
         {% for key, name in headers %}
@@ -16,8 +16,8 @@
     {% endfor %}
     </tbody>
 
-    <tfoot class="footer-stats-table">
-    <tr class="success">
+    <tfoot>
+    <tr>
         {% for key, value in aggregations %}
             <th class="stats-table-{{ key }}">{{ value }}</th>
         {% endfor %}

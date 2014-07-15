@@ -46,5 +46,20 @@ class HTMLTest extends DumperTestAbstract
         $expectedDoc->load(__DIR__.'/Fixtures/test.html');
 
         $this->assertEquals($expectedDoc, $doc);
+
+
+        // Test with a custom template
+        $dumper = new HTMLDumper(array('template'=>'custom.html.twig',
+                                       'templateFolder'=>__DIR__.'/Fixtures/template',
+                                       'templateOptions'=>array('title'=>'My title test')));
+        $html = $dumper->dump($statsTable);
+
+        $doc = new \DOMDocument();
+        $doc->loadXML($html);
+
+        $expectedDoc = new \DOMDocument();
+        $expectedDoc->load(__DIR__.'/Fixtures/test-custom.html');
+
+        $this->assertEquals($expectedDoc, $doc);
     }
 }
