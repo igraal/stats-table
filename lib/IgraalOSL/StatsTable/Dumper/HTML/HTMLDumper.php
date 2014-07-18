@@ -51,29 +51,8 @@ class HTMLDumper extends Dumper
         $aggregations = $statsTable->getAggregations();
         $aggregationsFormats = $statsTable->getAggregationsFormats();
 
-        $formatLine = function($line, $format)
-        {
-            foreach($line as $id=>&$val)
-            {
-                if(array_key_exists($id, $format)) {
-                    $val = $this->formatValue($format[$id], $val);
-                }
-            }
-
-            return $line;
-        };
-
-        $formatCollection = function($collection, $format) use ($formatLine)
-        {
-            foreach($collection as &$line)
-            {
-                $line = $formatLine($line, $format);
-            }
-            return $collection;
-        };
-
-        $data = $formatCollection($data, $format);
-        $aggregations = $formatLine($aggregations, $aggregationsFormats);
+        $data = $this->formatData($data, $format);
+        $aggregations = $this->formatLine($aggregations, $aggregationsFormats);
 
         $params = array('headers'      => $statsTable->getHeaders(),
                         'data'         => $data,
@@ -81,6 +60,26 @@ class HTMLDumper extends Dumper
 
         $params = array_merge($params, $this->templateOptions);
         return $this->twig->render($this->template, $params);
+    }
+
+    protected function formatData($data, $format)
+    {
+        foreach ($data as &$line) {
+            $line = $this->formatLine($line, $format);
+        }
+
+        return $data;
+    }
+
+    protected function formatLine($line, $format)
+    {
+        foreach ($line as $id => &$val) {
+            if (array_key_exists($id, $format)) {
+                $val = $this->formatValue($format[$id], $val);
+            }
+        }
+
+        return $line;
     }
 
     /**
