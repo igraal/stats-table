@@ -158,8 +158,7 @@ class StatsTable
     public function sortMultipleColumn($columns)
     {
         $compareFuncList = array();
-        foreach($columns as $colName=>$asc)
-        {
+        foreach($columns as $colName=>$asc) {
             $columnFormat = array_key_exists($colName, $this->dataFormats) ? $this->dataFormats[$colName] : Format::STRING;
             $compareFuncList[$colName] = $this->_getFunctionForFormat($columnFormat, $asc);
         }
@@ -176,11 +175,10 @@ class StatsTable
     public function uSortMultipleColumn($columns)
     {
         $dataFormats = $this->dataFormats;
-        $sort = function($a, $b) use ($columns, $dataFormats)
-        {
-            foreach($columns as $colName=>$fn) {
+        $sort = function ($a, $b) use ($columns, $dataFormats) {
+            foreach ($columns as $colName => $fn) {
                 $tmp = $fn($a[$colName], $b[$colName]);
-                if($tmp !== 0) {
+                if ($tmp !== 0) {
                     return $tmp;
                 }
             }
@@ -193,22 +191,20 @@ class StatsTable
 
     private function _getFunctionForFormat($format, $asc)
     {
-        $genericFunc = function($a, $b) use($asc)
-        {
+        $genericFunc = function ($a, $b) use ($asc) {
             if ($a == $b) {
                 return 0;
             }
             return ($a < $b) ? ($asc ? -1 : 1) : ($asc ? 1 : -1);
         };
 
-        $stringCmp = function($a, $b) use($asc)
-        {
+        $stringCmp = function ($a, $b) use ($asc) {
             $tmp = strcmp($a, $b);
             return $asc ? $tmp : -$tmp;
         };
 
 
-        if(Format::STRING == $format) {
+        if (Format::STRING == $format) {
             return $stringCmp;
         } else {
             return $genericFunc;
