@@ -47,8 +47,6 @@ class HTMLTest extends DumperTestAbstract
         $doc = new \DOMDocument();
         $doc->loadXML($html);
 
-//        $doc->save(__DIR__.'/Fixtures/test.html');
-
         $expectedDoc = new \DOMDocument();
         $expectedDoc->load(__DIR__.'/Fixtures/test.html');
 
