@@ -2,7 +2,11 @@
     <thead>
     <tr>
         {% for key, name in headers %}
-            <th class="stats-table-{{ key }}">{{ name }}</th>
+            <th class="stats-table-{{ key }}">
+                {% if metaData[key].description is defined %}<abbr title="{{ metaData[key].description }}">{% endif %}
+                    {{ name }}
+                    {% if metaData[key].description is defined %}</abbr>{% endif %}
+            </th>
         {% endfor %}
     </tr>
     </thead>

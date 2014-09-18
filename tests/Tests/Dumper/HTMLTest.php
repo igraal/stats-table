@@ -31,16 +31,23 @@ class HTMLTest extends DumperTestAbstract
             'revenues' => 126.075,
         );
 
+        $metaData = array(
+            'date'=>array('description'=>'Date of the stats'),
+            'hits'=>array('description'=>'Number of hits')
+        );
+
         $aggregationsTypes = $dataTypes;
         $aggregationsTypes['date'] = Format::STRING;
         $aggregationsTypes['ratio'] = Format::PCT;
 
-        $statsTable = new StatsTable($data, $headers, $aggregations, $dataTypes, $aggregationsTypes);
+        $statsTable = new StatsTable($data, $headers, $aggregations, $dataTypes, $aggregationsTypes, $metaData);
 
         $dumper = new HTMLDumper();
         $html = $dumper->dump($statsTable);
         $doc = new \DOMDocument();
         $doc->loadXML($html);
+
+//        $doc->save(__DIR__.'/Fixtures/test.html');
 
         $expectedDoc = new \DOMDocument();
         $expectedDoc->load(__DIR__.'/Fixtures/test.html');

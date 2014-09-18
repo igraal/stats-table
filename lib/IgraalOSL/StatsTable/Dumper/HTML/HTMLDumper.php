@@ -50,13 +50,15 @@ class HTMLDumper extends Dumper
         $format = $statsTable->getDataFormats();
         $aggregations = $statsTable->getAggregations();
         $aggregationsFormats = $statsTable->getAggregationsFormats();
+        $metaData = $statsTable->getMetaData();
 
         $data = $this->formatData($data, $format);
         $aggregations = $this->formatLine($aggregations, $aggregationsFormats);
 
         $params = array('headers'      => $statsTable->getHeaders(),
                         'data'         => $data,
-                        'aggregations' => $aggregations);
+                        'aggregations' => $aggregations,
+                        'metaData'     => $metaData);
 
         $params = array_merge($params, $this->templateOptions);
         return $this->twig->render($this->template, $params);

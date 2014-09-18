@@ -103,7 +103,8 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
             array('hits' => 'Hits'),
             array('hits' => 26),
             array('hits'=>Format::INTEGER),
-            array('hits'=>Format::INTEGER)
+            array('hits'=>Format::INTEGER),
+            array('hits'=>array())
         ), $stats);
     }
 
@@ -112,9 +113,7 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
         $data = $this->_getTestData();
         $statsTable = new StatsTableBuilder(
             $data,
-            array('hits' => 'Hits'),
-            array(),
-            array()
+            array('hits' => 'Hits')
         );
 
         $stats = $statsTable->build();
@@ -122,7 +121,9 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
             $data,
             array('hits' => 'Hits'),
             array('hits' => null),
-            array('hits'=>  null)
+            array('hits'=>  null),
+            array(),
+            array('hits'=>  array())
         ), $stats);
     }
 
@@ -130,9 +131,7 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
     {
         $statsTable = new StatsTableBuilder(
             array(),
-            array('hits' => 'Hits'),
-            array(),
-            array()
+            array('hits' => 'Hits')
         );
 
         $stats = $statsTable->build();
@@ -140,7 +139,9 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
             array(),
             array('hits' => 'Hits'),
             array('hits' => null),
-            array('hits'=>  null)
+            array('hits'=>  null),
+            array(),
+            array('hits'=>  array())
         ), $stats);
     }
 
@@ -159,7 +160,8 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
             array('hits' => 'Hits'),
             array('hits' => 0),
             array('hits'=>Format::INTEGER),
-            array('hits'=>Format::INTEGER)
+            array('hits'=>Format::INTEGER),
+            array('hits'=>array())
         ), $stats);
     }
 

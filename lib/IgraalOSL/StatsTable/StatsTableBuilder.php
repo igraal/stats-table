@@ -22,10 +22,11 @@ class StatsTableBuilder
      * @param array $aggregations
      * @param array $columnNames
      * @param array $defaultValues
-     * @param null $indexes
+     * @param null  $indexes
+     * @param array $metaData
      * @throws \InvalidArgumentException
      */
-    public function __construct($table, $headers = array(), $formats = array(), $aggregations = array(), $columnNames = array(), array $defaultValues = array(), $indexes = null)
+    public function __construct($table, $headers = array(), $formats = array(), $aggregations = array(), $columnNames = array(), array $defaultValues = array(), $indexes = null, $metaData = array())
     {
         $this->columns = array();
 
@@ -38,7 +39,7 @@ class StatsTableBuilder
         $this->defaultValues = $defaultValues;
 
         // Append the values
-        $this->appendTable($table, $headers, $formats, $aggregations, $columnNames);
+        $this->appendTable($table, $headers, $formats, $aggregations, $columnNames, $defaultValues, $metaData);
     }
 
     /**
@@ -58,7 +59,7 @@ class StatsTableBuilder
      * @param null $format
      * @param AggregationInterface $aggregation
      */
-    public function addIndexesAsColumn($columnName, $headerName = null, $format = null, AggregationInterface $aggregation = null)
+    public function addIndexesAsColumn($columnName, $headerName = null, $format = null, AggregationInterface $aggregation = null, $metaData = array())
     {
         $values = array();
         foreach ($this->indexes as $index) {
@@ -69,7 +70,8 @@ class StatsTableBuilder
             $values,
             $headerName,
             $format,
-            $aggregation
+            $aggregation,
+            $metaData
         );
 
         $columns = array_reverse($this->columns);
@@ -93,7 +95,8 @@ class StatsTableBuilder
         $formats,
         $aggregations,
         $columnNames = array(),
-        $defaultValues = array()
+        $defaultValues = array(),
+        $metaData = array()
     ) {
         $this->defaultValues = array_merge($this->defaultValues, $defaultValues);
 
@@ -110,7 +113,8 @@ class StatsTableBuilder
                 $this->getAssocColumn($table, $columnName),
                 $this->getParameter($headers, $columnName, $columnName),
                 $this->getParameter($formats, $columnName),
-                $this->getParameter($aggregations, $columnName)
+                $this->getParameter($aggregations, $columnName),
+                $this->getParameter($metaData, $columnName, array())
             );
 
             if (count($this->defaultValues)) {
@@ -177,10 +181,10 @@ class StatsTableBuilder
      * @param string                        $format
      * @param AggregationInterface          $aggregation
      */
-    public function addDynamicColumn($columnName, DynamicColumnBuilderInterface $dynamicColumn, $header = '', $format = null, AggregationInterface $aggregation = null)
+    public function addDynamicColumn($columnName, DynamicColumnBuilderInterface $dynamicColumn, $header = '', $format = null, AggregationInterface $aggregation = null, $metaData = array())
     {
         $values = $dynamicColumn->buildColumnValues($this);
-        $this->columns[$columnName] = new StatsColumnBuilder($values, $header, $format, $aggregation);
+        $this->columns[$columnName] = new StatsColumnBuilder($values, $header, $format, $aggregation, $metaData);
     }
 
     /**
@@ -195,6 +199,7 @@ class StatsTableBuilder
         $dataFormats = array();
         $aggregations = array();
         $aggregationsFormats = array();
+        $metaData = array();
 
         foreach ($this->indexes as $index) {
             $columnsNames = array_keys($this->columns);
@@ -212,6 +217,7 @@ class StatsTableBuilder
             $dataFormats[$columnName] = $column->getFormat();
 
             $headers = array_merge($headers, array($columnName => $column->getHeaderName()));
+            $metaData = array_merge($metaData, array($columnName => $column->getMetaData()));
 
             $columnAggregation = $column->getAggregation();
             if ($columnAggregation) {
@@ -224,9 +230,10 @@ class StatsTableBuilder
         }
 
         $headers = $this->orderColumns($headers, $columns);
+        $metaData = $this->orderColumns($metaData, $columns);
         $aggregations = $this->orderColumns($aggregations, $columns);
 
-        return new StatsTable($data, $headers, $aggregations, $dataFormats, $aggregationsFormats);
+        return new StatsTable($data, $headers, $aggregations, $dataFormats, $aggregationsFormats, $metaData);
     }
 
     /**
@@ -320,6 +327,14 @@ class StatsTableBuilder
                 $this->columns
             )
         );
+        $metaData = $filterLine(
+            array_map(
+                function (StatsColumnBuilder $c) {
+                    return $c->getMetaData();
+                },
+                $this->columns
+            )
+        );
 
         $data = array();
 
@@ -336,7 +351,11 @@ class StatsTableBuilder
                 array_map($filterLine, $lines),
                 $headers,
                 $formats,
-                $tmpAggregations
+                $tmpAggregations,
+                array(),
+                array(),
+                null,
+                $metaData
             );
             $tmpTable = $tmpTableBuilder->build();
             $data[] = $tmpTable->getAggregations();
@@ -346,7 +365,11 @@ class StatsTableBuilder
             $data,
             $headers,
             $formats,
-            $aggregations
+            $aggregations,
+            array(),
+            array(),
+            null,
+            $metaData
         );
     }
 }

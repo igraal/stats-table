@@ -11,6 +11,7 @@ class StatsTable
     private $data;
     private $dataFormats;
     private $aggregationsFormats;
+    private $metaData;
 
     /**
      * @return mixed
@@ -53,6 +54,14 @@ class StatsTable
     }
 
     /**
+     * @return array
+     */
+    public function getMetaData()
+    {
+        return $this->metaData;
+    }
+
+    /**
      * Constructs a new stats table
      * @param array $data
      * @param $headers
@@ -65,13 +74,15 @@ class StatsTable
         array $headers = array(),
         array $aggregations = array(),
         array $dataFormats = array(),
-        array $aggregationsFormats = array()
+        array $aggregationsFormats = array(),
+        array $metaData = array()
     ) {
         $this->headers = $headers;
         $this->data = $data;
         $this->aggregations = $aggregations;
         $this->dataFormats = $dataFormats;
         $this->aggregationsFormats = $aggregationsFormats;
+        $this->metaData = $metaData;
     }
 
     /**

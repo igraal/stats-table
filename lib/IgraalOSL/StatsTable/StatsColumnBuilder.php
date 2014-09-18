@@ -12,12 +12,13 @@ class StatsColumnBuilder
      * @param string               $format      Format
      * @param AggregationInterface $aggregation Aggregation
      */
-    public function __construct($values, $headerName = '', $format = null, AggregationInterface $aggregation = null)
+    public function __construct($values, $headerName = '', $format = null, AggregationInterface $aggregation = null, $metaData = array())
     {
         $this->values = $values;
         $this->headerName = $headerName;
         $this->format = $format;
         $this->aggregation = $aggregation;
+        $this->metaData = $metaData;
     }
 
     /** @var Array The raw values */
@@ -28,6 +29,8 @@ class StatsColumnBuilder
     private $aggregation;
     /** @var string The header name */
     private $headerName;
+    /** @var array Column metadata */
+    private $metaData;
 
     /**
      * @return mixed[]
@@ -82,6 +85,24 @@ class StatsColumnBuilder
     {
         return $this->format;
     }
+
+    /**
+     * @return array
+     */
+    public function getMetaData()
+    {
+        return $this->metaData;
+    }
+
+    /**
+     * @param array $metaData
+     */
+    public function setMetaData($metaData)
+    {
+        $this->metaData = $metaData;
+    }
+
+
 
     /**
      * Ensure column is filled with given indexes. If not, it will be filled with default values
