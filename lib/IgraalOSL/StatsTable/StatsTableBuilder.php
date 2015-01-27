@@ -188,6 +188,19 @@ class StatsTableBuilder
     }
 
     /**
+     * Add a column
+     * @param mixed                         $columnName
+     * @param array                         $values
+     * @param string                        $header
+     * @param string                        $format
+     * @param AggregationInterface          $aggregation
+     */
+    public function addColumn($columnName, array $values, $header = '', $format = null, AggregationInterface $aggregation = null, $metaData = array())
+    {
+        $this->columns[$columnName] = new StatsColumnBuilder($values, $header, $format, $aggregation, $metaData);
+    }
+
+    /**
      * Build the data
      * @param  array      $columns Desired columns
      * @return StatsTable
@@ -207,6 +220,7 @@ class StatsTableBuilder
             $line = array();
             foreach ($columnsNames as $columnName) {
                 $columnValues = $this->columns[$columnName]->getValues();
+
                 $line = array_merge($line, array($columnName => $columnValues[$index]));
             }
 
