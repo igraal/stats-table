@@ -174,6 +174,16 @@ class StatsTableBuilder
     }
 
     /**
+     * Get registered column names
+     *
+     * @return string[]
+     */
+    public function getColumnNames()
+    {
+        return array_keys($this->columns);
+    }
+
+    /**
      * Add a dynamic column
      * @param mixed                         $columnName
      * @param DynamicColumnBuilderInterface $dynamicColumn
