@@ -5,6 +5,15 @@ namespace IgraalOSL\StatsTable\Dumper\Excel;
 use IgraalOSL\StatsTable\Dumper\Dumper;
 use IgraalOSL\StatsTable\Dumper\Format;
 use IgraalOSL\StatsTable\StatsTable;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Style\Style;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ExcelDumper extends Dumper
 {
@@ -50,14 +59,15 @@ class ExcelDumper extends Dumper
      * Dumps the stats table
      * @param  StatsTable $statsTable
      * @return string
+     * @throws \Exception
      */
     public function dump(StatsTable $statsTable)
     {
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
 
         $excel->getDefaultStyle()->applyFromArray($this->getDefaultStyleArray());
 
-        $sheet = $excel->getSheet();
+        $sheet = $excel->getActiveSheet();
 
         $row = 1;
         $data = $statsTable->getData();
@@ -65,7 +75,7 @@ class ExcelDumper extends Dumper
 
         // HEADERS //
         if ($this->enableHeaders) {
-            $headerStyle = new \PHPExcel_Style();
+            $headerStyle = new Style();
             $headerStyle->applyFromArray($this->getHeadersStyleArray());
 
             $col = 0;
@@ -73,7 +83,7 @@ class ExcelDumper extends Dumper
                 $sheet->setCellValueByColumnAndRow($col, $row, $header);
                 $col++;
             }
-            $sheet->duplicateStyle($headerStyle, 'A1:'.\PHPExcel_Cell::stringFromColumnIndex($width-1).'1');
+            $sheet->duplicateStyle($headerStyle, 'A1:'. Coordinate::stringFromColumnIndex($width-1).'1');
             $row++;
         }
 
@@ -91,12 +101,12 @@ class ExcelDumper extends Dumper
         // FINAL FORMATTING //
         for ($col = 0; $col < $width; $col++) {
             $sheet
-                ->getColumnDimension(\PHPExcel_Cell::stringFromColumnIndex($col))
+                ->getColumnDimension(Coordinate::stringFromColumnIndex($col))
                 ->setAutoSize(true);
         }
 
-        $xlsDumper = new \PHPExcel_Writer_Excel2007($excel);
-        $pFilename = @tempnam(\PHPExcel_Shared_File::sys_get_temp_dir(), 'phpxltmp');
+        $xlsDumper = new Xlsx($excel);
+        $pFilename = @tempnam(sys_get_temp_dir(), 'phpxltmp');
         $xlsDumper->save($pFilename);
         $contents = file_get_contents($pFilename);
         @unlink($pFilename);
@@ -128,7 +138,7 @@ class ExcelDumper extends Dumper
             $this->getDefaultStyleArray(),
             array(
                 'borders' => array(
-                    'allborders' => array('style' => \PHPExcel_Style_Border::BORDER_THIN, 'color' => array('rgb' => '000000')),
+                    'allBorders' => array('borderStyle' => Border::BORDER_THIN, 'color' => array('argb' => 'FF000000')),
                 )
             )
         );
@@ -152,8 +162,8 @@ class ExcelDumper extends Dumper
 
             if ($bgColor) {
                 $style['fill'] = array(
-                    'type' => \PHPExcel_Style_Fill::FILL_SOLID,
-                    'color' => array('rgb' => $bgColor)
+                    'fillType' => Fill::FILL_SOLID,
+                    'color' => array('argb' => $bgColor)
                 );
             }
         }
@@ -172,15 +182,15 @@ class ExcelDumper extends Dumper
             array(
                 'borders' => array(
                     'bottom'     => array(
-                        'style' => \PHPExcel_Style_Border::BORDER_MEDIUM,
+                        'style' => Border::BORDER_MEDIUM,
                         'color' => array(
-                            'rgb' => '000000'
+                            'argb' => 'FF000000'
                         )
                     )
                 ),
                 'fill' => array(
-                    'type' => \PHPExcel_Style_Fill::FILL_SOLID,
-                    'color' => array('rgb' => 'd0d0d0')
+                    'fillType' => Fill::FILL_SOLID,
+                    'color' => array('argb' => 'FFD0D0D0')
                 ),
                 'font' => array('bold' => true)
             )
@@ -198,15 +208,15 @@ class ExcelDumper extends Dumper
             array(
                 'borders' => array(
                     'top'     => array(
-                        'style' => \PHPExcel_Style_Border::BORDER_MEDIUM,
+                        'style' => Border::BORDER_MEDIUM,
                         'color' => array(
-                            'rgb' => '000000'
+                            'argb' => 'FF000000'
                         )
                     )
                 ),
                 'fill' => array(
-                    'type' => \PHPExcel_Style_Fill::FILL_SOLID,
-                    'color' => array('rgb' => 'd0d0d0')
+                    'fillType' => Fill::FILL_SOLID,
+                    'color' => array('argb' => 'FFD0D0D0')
                 ),
                 'font' => array('bold' => true)
             )
@@ -229,13 +239,14 @@ class ExcelDumper extends Dumper
 
     /**
      * Set values in specific row
-     * @param \PHPExcel_Worksheet $sheet      The worksheet
+     * @param Worksheet $sheet      The worksheet
      * @param integer             $row        The selected row
      * @param array               $values     The values to insert
      * @param array               $formats    Associative arrays with formats
      * @param array               $styleArray An array representing the style
+     * @throws \Exception
      */
-    protected function applyValues(\PHPExcel_Worksheet $sheet, $row, $values, $formats, $styleArray = array())
+    protected function applyValues(Worksheet $sheet, $row, $values, $formats, $styleArray = array())
     {
         $col = 0;
         foreach ($values as $index => $value) {
@@ -246,21 +257,21 @@ class ExcelDumper extends Dumper
 
     /**
      * Set value in specific cell
-     * @param \PHPExcel_Worksheet $sheet      The worksheet
+     * @param Worksheet $sheet      The worksheet
      * @param integer             $col        The selected column
      * @param integer             $row        The selected row
      * @param array               $value      The values to insert
      * @param array               $format     Associative arrays with formats
      * @param array               $styleArray An array representing the style
-     * @param $row
+     * @throws \Exception
      */
-    protected function applyValue(\PHPExcel_Worksheet $sheet, $col, $row, $value, $format, $styleArray = array())
+    protected function applyValue(Worksheet $sheet, $col, $row, $value, $format, $styleArray = array())
     {
         if (0 == count($styleArray)) {
             $styleArray = $this->getDefaultStyleArrayForRow($row);
         }
 
-        $style = new \PHPExcel_Style();
+        $style = new Style();
         $style->applyFromArray($styleArray);
 
         switch ($format) {
@@ -270,8 +281,8 @@ class ExcelDumper extends Dumper
                 } else {
                     $date = $value;
                 }
-                $value = \PHPExcel_Shared_Date::PHPToExcel($date);
-                $style->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDD2);
+                $value = Date::PHPToExcel($date);
+                $style->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_YYYYMMDD2);
                 break;
 
             case Format::DATETIME:
@@ -280,16 +291,16 @@ class ExcelDumper extends Dumper
                 } else {
                     $date = $value;
                 }
-                $value = \PHPExcel_Shared_Date::PHPToExcel($date);
+                $value = Date::PHPToExcel($date);
                 $style->getNumberFormat()->setFormatCode(self::FORMAT_DATETIME);
                 break;
 
             case Format::FLOAT2:
-                $style->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                $style->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                 break;
 
             case Format::INTEGER:
-                $style->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+                $style->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER);
                 break;
 
             case Format::MONEY:
@@ -298,20 +309,20 @@ class ExcelDumper extends Dumper
                 break;
 
             case Format::PCT:
-                $style->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE);
+                $style->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_PERCENTAGE);
                 break;
 
             case Format::PCT2:
-                $style->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE_00);
+                $style->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_PERCENTAGE_00);
                 break;
 
             case Format::STRING:
-                $style->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+                $style->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
                 break;
         }
 
         $sheet->setCellValueByColumnAndRow($col, $row, $value);
-        $sheet->duplicateStyle($style, \PHPExcel_Cell::stringFromColumnIndex($col).$row);
+        $sheet->duplicateStyle($style, Coordinate::stringFromColumnIndex($col).$row);
     }
 
     public function getMimeType()

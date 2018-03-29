@@ -2,13 +2,14 @@
 
 namespace Tests;
 
+use IgraalOSL\StatsTable\Aggregation\AggregationInterface;
 use IgraalOSL\StatsTable\StatsColumnBuilder;
 
 class StatsColumnBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreation()
     {
-        $aggregationMock = $this->getMock('IgraalOSL\StatsTable\Aggregation\AggregationInterface');
+        $aggregationMock = $this->getAggregationMock();
 
         $values = array(3, 5);
         $column = new StatsColumnBuilder($values, 'Hits', 'format', $aggregationMock);
@@ -33,7 +34,7 @@ class StatsColumnBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testSetters()
     {
-        $aggregationMock = $this->getMock('IgraalOSL\StatsTable\Aggregation\AggregationInterface');
+        $aggregationMock = $this->getAggregationMock();
 
         $values = array(3, 5);
         $column = new StatsColumnBuilder($values, 'Hits');
@@ -45,5 +46,15 @@ class StatsColumnBuilderTest extends \PHPUnit_Framework_TestCase
 
         $column->setAggregation($aggregationMock);
         $this->assertEquals($aggregationMock, $column->getAggregation());
+    }
+
+    /**
+     * @return AggregationInterface
+     */
+    private function getAggregationMock()
+    {
+        return $this
+            ->getMockBuilder(AggregationInterface::class)
+            ->getMockForAbstractClass();
     }
 }
