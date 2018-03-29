@@ -18,55 +18,55 @@ class CSVTest extends DumperTestAbstract
         // DATE
         $this->assertEquals(
             "2014-01-01\n2014-01-01\n",
-            $csvDumper->dump(new StatsTable(array(array('date' => '2014-01-01'), array('date' => new \DateTime('2014-01-01'))), array(), array(), array('date' => Format::DATE)))
+            $csvDumper->dump(new StatsTable([['date' => '2014-01-01'], ['date' => new \DateTime('2014-01-01')]], [], [], ['date' => Format::DATE]))
         );
 
         // DATETIME
         $this->assertEquals(
             "\"2014-01-01 00:00:00\"\n\"2014-01-01 00:00:00\"\n",
-            $csvDumper->dump(new StatsTable(array(array('date' => '2014-01-01 00:00:00'), array('date' => new \DateTime('2014-01-01 00:00:00'))), array(), array(), array('date' => Format::DATETIME)))
+            $csvDumper->dump(new StatsTable([['date' => '2014-01-01 00:00:00'], ['date' => new \DateTime('2014-01-01 00:00:00')]], [], [], ['date' => Format::DATETIME]))
         );
 
         // INTEGER
         $this->assertEquals(
             "132\n133\n",
-            $csvDumper->dump(new StatsTable(array(array('test' => 132), array('test' => 133.3)), array(), array(), array('test' => Format::INTEGER)))
+            $csvDumper->dump(new StatsTable([['test' => 132], ['test' => 133.3]], [], [], ['test' => Format::INTEGER]))
         );
 
         // FLOAT2
         $this->assertEquals(
             "132.00\n133.35\n",
-            $csvDumper->dump(new StatsTable(array(array('test' => 132), array('test' => 133.351)), array(), array(), array('test' => Format::FLOAT2)))
+            $csvDumper->dump(new StatsTable([['test' => 132], ['test' => 133.351]], [], [], ['test' => Format::FLOAT2]))
         );
 
         // MONEY
         $this->assertEquals(
             "\"132 €\"\n\"133 €\"\n",
-            $csvDumper->dump(new StatsTable(array(array('test' => 132), array('test' => 133.351)), array(), array(), array('test' => Format::MONEY)))
+            $csvDumper->dump(new StatsTable([['test' => 132], ['test' => 133.351]], [], [], ['test' => Format::MONEY]))
         );
 
         // MONEY2
         $this->assertEquals(
             "\"132.00 €\"\n\"133.35 €\"\n",
-            $csvDumper->dump(new StatsTable(array(array('test' => 132), array('test' => 133.351)), array(), array(), array('test' => Format::MONEY2)))
+            $csvDumper->dump(new StatsTable([['test' => 132], ['test' => 133.351]], [], [], ['test' => Format::MONEY2]))
         );
 
         // PCT
         $this->assertEquals(
             "\"132 %\"\n\"133 %\"\n",
-            $csvDumper->dump(new StatsTable(array(array('test' => 132), array('test' => 133.351)), array(), array(), array('test' => Format::PCT)))
+            $csvDumper->dump(new StatsTable([['test' => 132], ['test' => 133.351]], [], [], ['test' => Format::PCT]))
         );
 
         // PCT2
         $this->assertEquals(
             "\"132.00 %\"\n\"133.35 %\"\n",
-            $csvDumper->dump(new StatsTable(array(array('test' => 132), array('test' => 133.351)), array(), array(), array('test' => Format::PCT2)))
+            $csvDumper->dump(new StatsTable([['test' => 132], ['test' => 133.351]], [], [], ['test' => Format::PCT2]))
         );
 
         // String
         $this->assertEquals(
             "132\n133.351\n",
-            $csvDumper->dump(new StatsTable(array(array('test' => 132), array('test' => 133.351)), array(), array(), array('test' => Format::STRING)))
+            $csvDumper->dump(new StatsTable([['test' => 132], ['test' => 133.351]], [], [], ['test' => Format::STRING]))
         );
 
         $csvDumper->enableAggregation(true);
@@ -74,9 +74,9 @@ class CSVTest extends DumperTestAbstract
         $this->assertEquals(
             "Date,Hits\n2014-01-01,3\nTotal,3\n",
             $csvDumper->dump(new StatsTable(
-                array(array('date' => '2014-01-01', 'hits' => 3)),
-                array('date' => 'Date', 'hits' => 'Hits'),
-                array('date' => 'Total', 'hits' => 3)
+                [['date' => '2014-01-01', 'hits' => 3]],
+                ['date' => 'Date', 'hits' => 'Hits'],
+                ['date' => 'Total', 'hits' => 3]
             ))
         );
     }

@@ -29,14 +29,14 @@ class HTMLDumper extends Dumper
      */
     protected $twig;
 
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $options = new ParameterBag($options);
 
         $this->template = $options->get('template', $this->getDefaultTemplate());
         $this->templateFolder = $options->get('templateFolder', $this->getDefaultTemplateFolder());
         $this->twig     = new \Twig_Environment(new \Twig_Loader_Filesystem($this->templateFolder));
-        $this->templateOptions = $options->get('templateOptions',array());
+        $this->templateOptions = $options->get('templateOptions',[]);
     }
 
     public function setTwig(\Twig_Environment $twig)
@@ -55,12 +55,15 @@ class HTMLDumper extends Dumper
         $data = $this->formatData($data, $format);
         $aggregations = $this->formatLine($aggregations, $aggregationsFormats);
 
-        $params = array('headers'      => $statsTable->getHeaders(),
-                        'data'         => $data,
-                        'aggregations' => $aggregations,
-                        'metaData'     => $metaData);
+        $params = [
+            'headers'      => $statsTable->getHeaders(),
+            'data'         => $data,
+            'aggregations' => $aggregations,
+            'metaData'     => $metaData
+        ];
 
         $params = array_merge($params, $this->templateOptions);
+
         return $this->twig->render($this->template, $params);
     }
 

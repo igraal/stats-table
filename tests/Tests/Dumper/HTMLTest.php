@@ -10,31 +10,31 @@ class HTMLTest extends DumperTestAbstract
 {
     public function testDump()
     {
-        $headers = array('date' => 'Date', 'hits' => 'Nb de visites', 'subscribers' => 'Nb inscrits', 'ratio' => 'Taux de transfo', 'revenues' => 'Revenus générés');
-        $data = array(
-            array('date' => '2014-01-01', 'hits' => '10', 'subscribers' => 2, 'ratio' => .2, 'revenues' => 45.321),
-            array('date' => '2014-01-01', 'hits' => '20', 'subscribers' => 7, 'ratio' => .35, 'revenues' => 80.754),
-        );
-        $dataTypes = array(
+        $headers = ['date' => 'Date', 'hits' => 'Nb de visites', 'subscribers' => 'Nb inscrits', 'ratio' => 'Taux de transfo', 'revenues' => 'Revenus générés'];
+        $data = [
+            ['date' => '2014-01-01', 'hits' => '10', 'subscribers' => 2, 'ratio' => .2, 'revenues' => 45.321],
+            ['date' => '2014-01-01', 'hits' => '20', 'subscribers' => 7, 'ratio' => .35, 'revenues' => 80.754],
+        ];
+        $dataTypes = [
             'date' => Format::DATE,
             'hits' => Format::INTEGER,
             'subscribers' => Format::INTEGER,
             'ratio' => Format::PCT2,
             'revenues' => Format::MONEY2,
-        );
+        ];
 
-        $aggregations = array(
+        $aggregations = [
             'date' => 'Total',
             'hits' => '30',
             'subscribers' => '9',
             'ratio' => '.3',
             'revenues' => 126.075,
-        );
+        ];
 
-        $metaData = array(
-            'date'=>array('description'=>'Date of the stats'),
-            'hits'=>array('description'=>'Number of hits')
-        );
+        $metaData = [
+            'date' => ['description'=>'Date of the stats'],
+            'hits' => ['description'=>'Number of hits'],
+        ];
 
         $aggregationsTypes = $dataTypes;
         $aggregationsTypes['date'] = Format::STRING;
@@ -54,9 +54,11 @@ class HTMLTest extends DumperTestAbstract
 
 
         // Test with a custom template
-        $dumper = new HTMLDumper(array('template'=>'custom.html.twig',
-                                       'templateFolder'=>__DIR__.'/Fixtures/template',
-                                       'templateOptions'=>array('title'=>'My title test')));
+        $dumper = new HTMLDumper([
+            'template'        => 'custom.html.twig',
+            'templateFolder'  => __DIR__.'/Fixtures/template',
+            'templateOptions' => ['title' => 'My title test']
+        ]);
         $html = $dumper->dump($statsTable);
 
         $doc = new \DOMDocument();

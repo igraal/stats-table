@@ -10,27 +10,27 @@ class DumperTestAbstract extends \PHPUnit_Framework_TestCase
 {
     public function getData()
     {
-        $table = array(
-            '2014-01-01' => array('hits' => 12),
-            '2014-01-03' => array('hits' => 14)
-        );
+        $table = [
+            '2014-01-01' => ['hits' => 12],
+            '2014-01-03' => ['hits' => 14],
+        ];
 
         return $table;
     }
 
     public function getHeaders()
     {
-        return array('hits' => 'Hits');
+        return ['hits' => 'Hits'];
     }
 
     public function getFormats()
     {
-        return array('hits' => Format::INTEGER);
+        return ['hits' => Format::INTEGER];
     }
 
     public function getAggregations()
     {
-        return array('hits' => new StaticAggregation('value'));
+        return ['hits' => new StaticAggregation('value')];
     }
 
     public function getStatsTableBuilder()
@@ -43,4 +43,3 @@ class DumperTestAbstract extends \PHPUnit_Framework_TestCase
         return $this->getStatsTableBuilder()->build();
     }
 }
- 

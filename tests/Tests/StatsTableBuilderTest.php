@@ -13,40 +13,40 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
 {
     public function testGetters()
     {
-        $table = array(
-            array('hits' => 12, 'subscribers' => 3),
-            array('hits' => 25, 'subscribers' => 4)
-        );
+        $table = [
+            ['hits' => 12, 'subscribers' => 3],
+            ['hits' => 25, 'subscribers' => 4]
+        ];
 
         $statsTable = new StatsTableBuilder(
             $table,
-            array('hits' => 'Hits', 'subscribers' => 'Subscribers')
+            ['hits' => 'Hits', 'subscribers' => 'Subscribers']
         );
 
-        $this->assertEquals(new StatsColumnBuilder(array(12, 25), 'Hits'), $statsTable->getColumn('hits'));
+        $this->assertEquals(new StatsColumnBuilder([12, 25], 'Hits'), $statsTable->getColumn('hits'));
     }
 
     public function testAdditionalIndexes()
     {
-        $table = array(
-            '2014-01-01' => array('hits' => 12),
-            '2014-01-03' => array('hits' => 14)
-        );
+        $table = [
+            '2014-01-01' => ['hits' => 12],
+            '2014-01-03' => ['hits' => 14]
+        ];
 
-        $defaultValues = array('hits' => 0);
+        $defaultValues = ['hits' => 0];
 
-        $wishedColumn = array(
+        $wishedColumn = [
             '2014-01-01' => 12,
             '2014-01-02' => 0,
             '2014-01-03' => 14,
-        );
+        ];
 
         $statsTable = new StatsTableBuilder(
             $table,
-            array(),
-            array(),
-            array(),
-            array(),
+            [],
+            [],
+            [],
+            [],
             $defaultValues,
             array_keys($wishedColumn)
         );
@@ -61,18 +61,21 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
 
     public function testAddIndexAsColumn()
     {
-        $table = array(
-            '2014-01-01' => array('hits' => 12),
-            '2014-01-03' => array('hits' => 14)
-        );
+        $table = [
+            '2014-01-01' => ['hits' => 12],
+            '2014-01-03' => ['hits' => 14]
+        ];
 
         $statsTable = new StatsTableBuilder($table);
         $statsTable->addIndexesAsColumn('date', 'Date');
 
-        $dateColumn = new StatsColumnBuilder(array(
+        $dateColumn = new StatsColumnBuilder(
+            [
                 '2014-01-01' => '2014-01-01',
                 '2014-01-03' => '2014-01-03'
-            ), 'Date');
+            ],
+            'Date'
+        );
 
         $this->assertEquals($dateColumn, $statsTable->getColumn('date'));
     }
@@ -81,10 +84,10 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
     private function _getTestData()
     {
         // Data of test
-        return array(
-            '2014-01-01' => array('hits' => 12),
-            '2014-01-03' => array('hits' => 14)
-        );
+        return [
+            '2014-01-01' => ['hits' => 12],
+            '2014-01-03' => ['hits' => 14],
+        ];
     }
 
     public function testBuildWithAggregation()
@@ -92,19 +95,19 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
         $data = $this->_getTestData();
         $statsTable = new StatsTableBuilder(
             $data,
-            array('hits' => 'Hits'),
-            array('hits'=>Format::INTEGER),
-            array('hits' => new SumAggregation('hits'))
+            ['hits' => 'Hits'],
+            ['hits'=>Format::INTEGER],
+            ['hits' => new SumAggregation('hits')]
         );
 
         $stats = $statsTable->build();
         $this->assertEquals(new StatsTable(
             $data,
-            array('hits' => 'Hits'),
-            array('hits' => 26),
-            array('hits'=>Format::INTEGER),
-            array('hits'=>Format::INTEGER),
-            array('hits'=>array())
+            ['hits' => 'Hits'],
+            ['hits' => 26],
+            ['hits'=>Format::INTEGER],
+            ['hits'=>Format::INTEGER],
+            ['hits'=>[]]
         ), $stats);
     }
 
@@ -113,80 +116,80 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
         $data = $this->_getTestData();
         $statsTable = new StatsTableBuilder(
             $data,
-            array('hits' => 'Hits')
+            ['hits' => 'Hits']
         );
 
         $stats = $statsTable->build();
         $this->assertEquals(new StatsTable(
             $data,
-            array('hits' => 'Hits'),
-            array('hits' => null),
-            array('hits'=>  null),
-            array(),
-            array('hits'=>  array())
+            ['hits' => 'Hits'],
+            ['hits' => null],
+            ['hits'=>  null],
+            [],
+            ['hits'=>  []]
         ), $stats);
     }
 
     public function testBuildWithoutData()
     {
         $statsTable = new StatsTableBuilder(
-            array(),
-            array('hits' => 'Hits')
+            [],
+            ['hits' => 'Hits']
         );
 
         $stats = $statsTable->build();
         $this->assertEquals(new StatsTable(
-            array(),
-            array('hits' => 'Hits'),
-            array('hits' => null),
-            array('hits'=>  null),
-            array(),
-            array('hits'=>  array())
+            [],
+            ['hits' => 'Hits'],
+            ['hits' => null],
+            ['hits'=>  null],
+            [],
+            ['hits'=>  []]
         ), $stats);
     }
 
     public function testBuildWithoutDataAndWithAggregation()
     {
         $statsTable = new StatsTableBuilder(
-            array(),
-            array('hits' => 'Hits'),
-            array('hits'=>Format::INTEGER),
-            array('hits' => new SumAggregation('hits'))
+            [],
+            ['hits' => 'Hits'],
+            ['hits'=>Format::INTEGER],
+            ['hits' => new SumAggregation('hits')]
         );
 
         $stats = $statsTable->build();
         $this->assertEquals(new StatsTable(
-            array(),
-            array('hits' => 'Hits'),
-            array('hits' => 0),
-            array('hits'=>Format::INTEGER),
-            array('hits'=>Format::INTEGER),
-            array('hits'=>array())
+            [],
+            ['hits' => 'Hits'],
+            ['hits' => 0],
+            ['hits'=>Format::INTEGER],
+            ['hits'=>Format::INTEGER],
+            ['hits'=>[]]
         ), $stats);
     }
 
     public function testMissingColumn()
     {
-        $table = array(
-            '2014-01-01' => array('hits' => 12),
-            '2014-01-03' => array()
-        );
+        $table = [
+            '2014-01-01' => ['hits' => 12],
+            '2014-01-03' => []
+        ];
 
-        $defaultValues = array('hits' => 0);
+        $defaultValues = ['hits' => 0];
 
         $statsTable = new StatsTableBuilder(
             $table,
-            array('hits' => 'Hits'),
-            array(),
-            array(),
+            ['hits' => 'Hits'],
+            [],
+            [],
             array_keys($defaultValues),
             $defaultValues
         );
 
-        $wishedColumn = array(
+        $wishedColumn = [
             '2014-01-01' => 12,
             '2014-01-03' => 0
-        );
+        ];
 
         $this->assertEquals(new StatsColumnBuilder($wishedColumn, 'Hits'), $statsTable->getColumn('hits'));
     }
@@ -196,7 +199,7 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidColumn()
     {
-        $table = array(array('hits' => 0));
+        $table = [['hits' => 0]];
         $statsTable = new StatsTableBuilder($table);
 
         $statsTable->getColumn('invalidColumn');
@@ -204,68 +207,68 @@ class StatsTableBuilderTests extends \PHPUnit_Framework_TestCase
 
     public function testOrderColumns()
     {
-        $table = array('a' => 'value1', 'b' => 'value2', 'c' => 'value3');
-        $expectedTable = array('c' => 'value3', 'a' => 'value1');
+        $table = ['a' => 'value1', 'b' => 'value2', 'c' => 'value3'];
+        $expectedTable = ['c' => 'value3', 'a' => 'value1'];
 
-        $this->assertEquals($expectedTable, StatsTableBuilder::orderColumns($table, array('c', 'a')));
+        $this->assertEquals($expectedTable, StatsTableBuilder::orderColumns($table, ['c', 'a']));
 
-        $this->assertEquals($table, StatsTableBuilder::orderColumns($table, array()));
+        $this->assertEquals($table, StatsTableBuilder::orderColumns($table, []));
     }
 
     public function testBuildWithOrder()
     {
-        $table = array(
-            array('a' => 'a', 'b' => 'b', 'c' => 'c'),
-            array('a' => 'A', 'b' => 'B', 'c' => 'C'),
-        );
-        $headers = array(
+        $table = [
+            ['a' => 'a', 'b' => 'b', 'c' => 'c'],
+            ['a' => 'A', 'b' => 'B', 'c' => 'C'],
+        ];
+        $headers = [
             'a' => 'Alpha',
             'b' => 'Bravo',
             'c' => 'Charly'
-        );
+        ];
 
         $statsTableBuilder = new StatsTableBuilder(
             $table,
             $headers,
-            array(Format::STRING, Format::STRING)
+            [Format::STRING, Format::STRING]
         );
 
-        $statsTable = $statsTableBuilder->build(array('c', 'a'));
+        $statsTable = $statsTableBuilder->build(['c', 'a']);
         $this->assertEquals(
-            array('c' => 'Charly', 'a' => 'Alpha'),
+            ['c' => 'Charly', 'a' => 'Alpha'],
             $statsTable->getHeaders()
         );
     }
 
     public function testGroupBy()
     {
-        $table = array(
-            array('tag' => 'one', 'subtag' => 'morning', 'hits' => 2),
-            array('tag' => 'one', 'subtag' => 'afternoon', 'hits' => 3),
-            array('tag' => 'two', 'subtag' => 'morning', 'hits' => 4),
-        );
+        $table = [
+            ['tag' => 'one', 'subtag' => 'morning', 'hits' => 2],
+            ['tag' => 'one', 'subtag' => 'afternoon', 'hits' => 3],
+            ['tag' => 'two', 'subtag' => 'morning', 'hits' => 4],
+        ];
         $statsTableBuilder = new StatsTableBuilder(
             $table,
-            array('tag' => 'Tag', 'subtag' => 'When', 'hits' => 'Hits'),
-            array('tag' => Format::STRING, 'subtag' => Format::STRING, 'hits' => Format::INTEGER),
-            array(
+            ['tag' => 'Tag', 'subtag' => 'When', 'hits' => 'Hits'],
+            ['tag' => Format::STRING, 'subtag' => Format::STRING, 'hits' => Format::INTEGER],
+            [
                 'tag' => new StaticAggregation('Tag'),
                 'subtag' => new StaticAggregation('Sub tag'),
                 'hits' => new SumAggregation('hits', Format::INTEGER)
-            )
+            ]
         );
 
-        $groupedByStatsTableBuilder = $statsTableBuilder->groupBy(array('tag'), array('subtag'));
+        $groupedByStatsTableBuilder = $statsTableBuilder->groupBy(['tag'], ['subtag']);
 
         $this->assertEquals(2, count($groupedByStatsTableBuilder->getColumns()));
 
         $this->assertEquals(
-            array('one', 'two'),
+            ['one', 'two'],
             $groupedByStatsTableBuilder->getColumn('tag')->getValues()
         );
 
         $this->assertEquals(
-            array(5, 4),
+            [5, 4],
             $groupedByStatsTableBuilder->getColumn('hits')->getValues()
         );
 

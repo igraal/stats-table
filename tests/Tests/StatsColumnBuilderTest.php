@@ -11,7 +11,7 @@ class StatsColumnBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $aggregationMock = $this->getAggregationMock();
 
-        $values = array(3, 5);
+        $values = [3, 5];
         $column = new StatsColumnBuilder($values, 'Hits', 'format', $aggregationMock);
 
         $this->assertEquals($values, $column->getValues());
@@ -22,10 +22,10 @@ class StatsColumnBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testEnsureIndexExists()
     {
-        $values = array('2014-01-01' => 3, '2014-01-03' => 5);
+        $values = ['2014-01-01' => 3, '2014-01-03' => 5];
         $column = new StatsColumnBuilder($values);
 
-        $column->insureIsFilled(array('2014-01-01', '2014-01-02', '2014-01-03'), 0);
+        $column->insureIsFilled(['2014-01-01', '2014-01-02', '2014-01-03'], 0);
 
         $values['2014-01-02'] = 0;
 
@@ -36,7 +36,7 @@ class StatsColumnBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $aggregationMock = $this->getAggregationMock();
 
-        $values = array(3, 5);
+        $values = [3, 5];
         $column = new StatsColumnBuilder($values, 'Hits');
 
         $column->setHeaderName('Hits2');

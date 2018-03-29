@@ -24,7 +24,7 @@ class RatioColumnBuilder implements DynamicColumnBuilderInterface
 
     public function buildColumnValues(StatsTableBuilder $statsTable)
     {
-        $column = array();
+        $column = [];
         $values = $statsTable->getColumn($this->valueInternalName)->getValues();
         $overs  = $statsTable->getColumn($this->overInternalName)->getValues();
         foreach ($statsTable->getIndexes() as $index) {

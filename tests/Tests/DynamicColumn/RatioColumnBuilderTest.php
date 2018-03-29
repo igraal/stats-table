@@ -10,11 +10,11 @@ class RatioColumnBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public function testBuilder()
     {
-        $table = array(
-            '2014-01-01' => array('hits' => 10, 'subscribers' => 5),
-            '2014-01-02' => array('hits' => 30, 'subscribers' => 9),
-            '2014-01-03' => array('hits' => 0, 'subscribers' => 0)
-        );
+        $table = [
+            '2014-01-01' => ['hits' => 10, 'subscribers' => 5],
+            '2014-01-02' => ['hits' => 30, 'subscribers' => 9],
+            '2014-01-03' => ['hits' => 0, 'subscribers' => 0]
+        ];
 
         $statsTable = new StatsTableBuilder($table);
 
@@ -22,11 +22,11 @@ class RatioColumnBuilderTest extends \PHPUnit_Framework_TestCase
 
         $statsTable->addDynamicColumn('ratio', $ratioBuilder, 'Ratio');
 
-        $ratioData = array(
+        $ratioData = [
             '2014-01-01' => .5,
             '2014-01-02' => .3,
             '2014-01-03' => 'N/A'
-        );
+        ];
         $ratioColumn = new StatsColumnBuilder($ratioData, 'Ratio');
         $this->assertEquals($ratioColumn, $statsTable->getColumn('ratio'));
     }

@@ -14,7 +14,7 @@ class CSVDumper extends Dumper
     private $enclosure;
     private $charset;
 
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         $bag = new ParameterBag($options);
         $this->delimiter = $bag->get('delimiter', ',');
@@ -54,7 +54,7 @@ class CSVDumper extends Dumper
         return fread($fileHandler, $len);
     }
 
-    private function writeLine($fileHandler, $line, $formats = array())
+    private function writeLine($fileHandler, $line, $formats = [])
     {
         foreach ($formats as $index => $format) {
             if (array_key_exists($index, $line)) {
