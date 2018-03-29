@@ -10,23 +10,23 @@ class SumColumnBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public function test()
     {
-        $table = array(
-            '2014-01-01' => array('hits' => 10, 'subscribers' => 5),
-            '2014-01-02' => array('hits' => 30, 'subscribers' => 9),
-            '2014-01-03' => array('hits' => 0, 'subscribers' => 0)
-        );
+        $table = [
+            '2014-01-01' => ['hits' => 10, 'subscribers' => 5],
+            '2014-01-02' => ['hits' => 30, 'subscribers' => 9],
+            '2014-01-03' => ['hits' => 0, 'subscribers' => 0],
+        ];
 
         $statsTable = new StatsTableBuilder($table);
 
-        $sumBuilder = new SumColumnBuilder(array('subscribers', 'hits'));
+        $sumBuilder = new SumColumnBuilder(['subscribers', 'hits']);
 
         $statsTable->addDynamicColumn('sum', $sumBuilder, 'Sum');
 
-        $sumData = array(
+        $sumData = [
             '2014-01-01' => 15,
             '2014-01-02' => 39,
             '2014-01-03' => 0
-        );
+        ];
         $sumColumn = new StatsColumnBuilder($sumData, 'Sum');
         $this->assertEquals($sumColumn, $statsTable->getColumn('sum'));
     }

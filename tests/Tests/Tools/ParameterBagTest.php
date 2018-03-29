@@ -8,10 +8,10 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
 {
     private function getSampleData()
     {
-        return array(
+        return [
             '1' => 'One',
             '2' => 'Two',
-        );
+        ];
     }
 
     private function getSampleBag()

@@ -34,7 +34,7 @@ class RelativeColumnBuilder implements DynamicColumnBuilderInterface
      */
     public function __construct($columns)
     {
-        $this->columns = is_array($columns) ? $columns : array($columns);
+        $this->columns = is_array($columns) ? $columns : [$columns];
     }
 
     /**

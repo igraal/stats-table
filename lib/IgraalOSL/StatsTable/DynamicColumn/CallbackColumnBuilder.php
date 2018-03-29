@@ -16,16 +16,16 @@ class CallbackColumnBuilder implements DynamicColumnBuilderInterface
 
     public function buildColumnValues(StatsTableBuilder $statsTable)
     {
-        $values = array();
+        $values = [];
 
         foreach ($statsTable->getIndexes() as $index) {
             // Recreate line
-            $line = array();
+            $line = [];
             foreach ($statsTable->getColumns() as $columnName => $column) {
                 $columnValues = $column->getValues();
-                $line = array_merge($line, array($columnName => $columnValues[$index]));
+                $line = array_merge($line, [$columnName => $columnValues[$index]]);
             }
-            $values[$index] = call_user_func_array($this->callback, array($line));
+            $values[$index] = call_user_func_array($this->callback, [$line]);
         }
 
         return $values;

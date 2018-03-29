@@ -32,11 +32,11 @@ The class `StatsTable` is the class that will hold your data. It takes one mando
 ```php
 use IgraalOSL\StatsTable\StatsTable;
 
-$data = array(
-    array('date' => '2014-01-01', 'hits' => 32500),
-    array('date' => '2014-01-02', 'hits' => 48650),
-);
-$headers = array('date' => 'Date', 'hits' => 'Number of hits')
+$data = [
+    ['date' => '2014-01-01', 'hits' => 32500],
+    ['date' => '2014-01-02', 'hits' => 48650],
+];
+$headers = ['date' => 'Date', 'hits' => 'Number of hits'];
 $statsTable = new StatsTable($data, $headers);
 ```
 
@@ -63,14 +63,14 @@ To help you construct a table, you can use the `StatsTableBuilder` class. It hel
 ```php
 use IgraalOSL\StatsTable\StatsTableBuilder;
 
-$data = array(
-    '2014-01-01' => array('hits' => 32500),
-    '2014-01-02' => array('hits' => 48650),
-);
+$data = [
+    '2014-01-01' => ['hits' => 32500],
+    '2014-01-02' => ['hits' => 48650],
+];
 
 $statsTableBuilder = new StatsTableBuilder(
     $data,
-    array('hits' => 'Number of hits')
+    ['hits' => 'Number of hits']
 );
 $statsTableBuilder->addIndexesAsColumn('date', 'Date');
 

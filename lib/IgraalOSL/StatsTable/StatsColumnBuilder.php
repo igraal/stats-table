@@ -12,7 +12,7 @@ class StatsColumnBuilder
      * @param string               $format      Format
      * @param AggregationInterface $aggregation Aggregation
      */
-    public function __construct($values, $headerName = '', $format = null, AggregationInterface $aggregation = null, $metaData = array())
+    public function __construct($values, $headerName = '', $format = null, AggregationInterface $aggregation = null, $metaData = [])
     {
         $this->values = $values;
         $this->headerName = $headerName;
@@ -111,7 +111,7 @@ class StatsColumnBuilder
      */
     public function insureIsFilled($indexes, $defaultValue)
     {
-        $newValues = array();
+        $newValues = [];
         foreach ($indexes as $index) {
             $newValues[$index] = array_key_exists($index, $this->values) ? $this->values[$index] : $defaultValue;
         }

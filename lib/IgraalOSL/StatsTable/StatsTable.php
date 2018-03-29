@@ -68,14 +68,15 @@ class StatsTable
      * @param $aggregations
      * @param array $dataFormats
      * @param array $aggregationsFormats
+     * @param array $metaData
      */
     public function __construct(
         array $data,
-        array $headers = array(),
-        array $aggregations = array(),
-        array $dataFormats = array(),
-        array $aggregationsFormats = array(),
-        array $metaData = array()
+        array $headers = [],
+        array $aggregations = [],
+        array $dataFormats = [],
+        array $aggregationsFormats = [],
+        array $metaData = []
     ) {
         $this->headers = $headers;
         $this->data = $data;
@@ -168,7 +169,7 @@ class StatsTable
      */
     public function sortMultipleColumn($columns)
     {
-        $compareFuncList = array();
+        $compareFuncList = [];
         foreach($columns as $colName=>$asc) {
             $columnFormat = array_key_exists($colName, $this->dataFormats) ? $this->dataFormats[$colName] : Format::STRING;
             $compareFuncList[$colName] = $this->_getFunctionForFormat($columnFormat, $asc);

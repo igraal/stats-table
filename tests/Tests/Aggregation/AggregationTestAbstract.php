@@ -11,12 +11,11 @@ class AggregationTestAbstract extends \PHPUnit_Framework_TestCase
      */
     protected function getSampleTable()
     {
-        $table = array(
-            '2014-01-01' => array('hits' => 10, 'subscribers' => 5),
-            '2014-01-02' => array('hits' => 30, 'subscribers' => 8),
-        );
+        $table = [
+            '2014-01-01' => ['hits' => 10, 'subscribers' => 5],
+            '2014-01-02' => ['hits' => 30, 'subscribers' => 8],
+        ];
 
         return new StatsTableBuilder($table);
     }
 }
- 

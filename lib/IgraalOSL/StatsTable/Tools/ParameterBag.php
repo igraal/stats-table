@@ -14,7 +14,7 @@ class ParameterBag
      * @param  array|ParameterBag        $bag
      * @throws \InvalidArgumentException
      */
-    public function __construct($bag = array())
+    public function __construct($bag = [])
     {
         if (!is_array($bag) && !($bag instanceof self)) {
             throw new \InvalidArgumentException('Bad constructor call');

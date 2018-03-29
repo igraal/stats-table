@@ -25,13 +25,13 @@ class ExcelDumper extends Dumper
     const FORMAT_EUR = '# ##0.00 €';
     const FORMAT_DATETIME = 'dd/mm/yy hh:mm';
 
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Constructor
      * @param array $options An array with options
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $this->options = $options;
     }
@@ -123,9 +123,9 @@ class ExcelDumper extends Dumper
      */
     protected function getDefaultStyleArray()
     {
-        return array(
-            'font' => array('name' => 'Arial', 'size' => 9),
-        );
+        return [
+            'font' => ['name' => 'Arial', 'size' => 9],
+        ];
     }
 
     /**
@@ -136,11 +136,14 @@ class ExcelDumper extends Dumper
     {
         return array_merge_recursive(
             $this->getDefaultStyleArray(),
-            array(
-                'borders' => array(
-                    'allBorders' => array('borderStyle' => Border::BORDER_THIN, 'color' => array('argb' => 'FF000000')),
-                )
-            )
+            [
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => Border::BORDER_THIN,
+                        'color' => ['argb' => 'FF000000'],
+                    ],
+                ],
+            ]
         );
     }
 
@@ -161,10 +164,10 @@ class ExcelDumper extends Dumper
             }
 
             if ($bgColor) {
-                $style['fill'] = array(
+                $style['fill'] = [
                     'fillType' => Fill::FILL_SOLID,
-                    'color' => array('argb' => $bgColor)
-                );
+                    'color' => ['argb' => $bgColor],
+                ];
             }
         }
 
@@ -179,21 +182,19 @@ class ExcelDumper extends Dumper
     {
         return array_merge_recursive(
             $this->getDefaultStyleForFilledCells(),
-            array(
-                'borders' => array(
-                    'bottom'     => array(
+            [
+                'borders' => [
+                    'bottom' => [
                         'style' => Border::BORDER_MEDIUM,
-                        'color' => array(
-                            'argb' => 'FF000000'
-                        )
-                    )
-                ),
-                'fill' => array(
+                        'color' => ['argb' => 'FF000000'],
+                    ],
+                ],
+                'fill' => [
                     'fillType' => Fill::FILL_SOLID,
-                    'color' => array('argb' => 'FFD0D0D0')
-                ),
-                'font' => array('bold' => true)
-            )
+                    'color' => ['argb' => 'FFD0D0D0']
+                ],
+                'font' => ['bold' => true],
+            ]
         );
     }
 
@@ -205,21 +206,19 @@ class ExcelDumper extends Dumper
     {
         return array_merge_recursive(
             $this->getDefaultStyleForFilledCells(),
-            array(
-                'borders' => array(
-                    'top'     => array(
+            [
+                'borders' => [
+                    'top' => [
                         'style' => Border::BORDER_MEDIUM,
-                        'color' => array(
-                            'argb' => 'FF000000'
-                        )
-                    )
-                ),
-                'fill' => array(
+                        'color' => ['argb' => 'FF000000'],
+                    ],
+                ],
+                'fill' => [
                     'fillType' => Fill::FILL_SOLID,
-                    'color' => array('argb' => 'FFD0D0D0')
-                ),
-                'font' => array('bold' => true)
-            )
+                    'color' => ['argb' => 'FFD0D0D0'],
+                ],
+                'font' => ['bold' => true],
+            ]
         );
     }
 
@@ -246,7 +245,7 @@ class ExcelDumper extends Dumper
      * @param array               $styleArray An array representing the style
      * @throws \Exception
      */
-    protected function applyValues(Worksheet $sheet, $row, $values, $formats, $styleArray = array())
+    protected function applyValues(Worksheet $sheet, $row, $values, $formats, $styleArray = [])
     {
         $col = 0;
         foreach ($values as $index => $value) {
@@ -265,7 +264,7 @@ class ExcelDumper extends Dumper
      * @param array               $styleArray An array representing the style
      * @throws \Exception
      */
-    protected function applyValue(Worksheet $sheet, $col, $row, $value, $format, $styleArray = array())
+    protected function applyValue(Worksheet $sheet, $col, $row, $value, $format, $styleArray = [])
     {
         if (0 == count($styleArray)) {
             $styleArray = $this->getDefaultStyleArrayForRow($row);

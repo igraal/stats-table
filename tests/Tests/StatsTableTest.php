@@ -9,22 +9,22 @@ class StatsTableTest extends \PHPUnit_Framework_TestCase
     public function testRemoveColumn()
     {
         $statsTable = new StatsTable(
-            array(
-                array('a' => 'a', 'b' => 'b'),
-                array('a' => 'A', 'b' => 'B')
-            ),
-            array('a' => 'Alpha', 'b' => 'Bravo')
+            [
+                ['a' => 'a', 'b' => 'b'],
+                ['a' => 'A', 'b' => 'B']
+            ],
+            ['a' => 'Alpha', 'b' => 'Bravo']
         );
 
         $statsTable->removeColumn('b');
 
-        $this->assertEquals(array('a' => 'Alpha'), $statsTable->getHeaders());
+        $this->assertEquals(['a' => 'Alpha'], $statsTable->getHeaders());
 
         $this->assertEquals(
-            array(
-                array('a' => 'a'),
-                array('a' => 'A')
-            ),
+            [
+                ['a' => 'a'],
+                ['a' => 'A']
+            ],
             $statsTable->getData()
         );
     }
@@ -32,13 +32,13 @@ class StatsTableTest extends \PHPUnit_Framework_TestCase
     private function _getSimpleTestData()
     {
         return new StatsTable(
-            array(
-                array('name' => 'Pierre', 'age' => '32'),
-                array('name' => 'Jacques', 'age' => '28'),
-                array('name' => 'Jean', 'age' => '32'),
-                array('name' => 'Paul', 'age' => '25'),
-            ),
-            array('name' => 'Name', 'age' => 'Age', 'order'=>'Order')
+            [
+                ['name' => 'Pierre', 'age' => '32'],
+                ['name' => 'Jacques', 'age' => '28'],
+                ['name' => 'Jean', 'age' => '32'],
+                ['name' => 'Paul', 'age' => '25'],
+            ],
+            ['name' => 'Name', 'age' => 'Age', 'order' => 'Order']
         );
     }
 
@@ -56,44 +56,44 @@ class StatsTableTest extends \PHPUnit_Framework_TestCase
 
     public function dataProviderForOneColumn()
     {
-        return array(
-            array(
+        return [
+            [
                 'age', true,
-                array(
-                    3=>array('name' => 'Paul', 'age' => '25'),
-                    1=>array('name' => 'Jacques', 'age' => '28'),
-                    0=>array('name' => 'Pierre', 'age' => '32'),
-                    2=>array('name' => 'Jean', 'age' => '32'),
-                )
-            ),
-            array(
+                [
+                    3 => ['name' => 'Paul', 'age' => '25'],
+                    1 => ['name' => 'Jacques', 'age' => '28'],
+                    0 => ['name' => 'Pierre', 'age' => '32'],
+                    2 => ['name' => 'Jean', 'age' => '32'],
+                ]
+            ],
+            [
                 'name', true,
-                array(
-                    1=>array('name' => 'Jacques', 'age' => '28'),
-                    2=>array('name' => 'Jean', 'age' => '32'),
-                    3=>array('name' => 'Paul', 'age' => '25'),
-                    0=>array('name' => 'Pierre', 'age' => '32'),
-                )
-            ),
-            array(
+                [
+                    1 => ['name' => 'Jacques', 'age' => '28'],
+                    2 => ['name' => 'Jean', 'age' => '32'],
+                    3 => ['name' => 'Paul', 'age' => '25'],
+                    0 => ['name' => 'Pierre', 'age' => '32'],
+                ]
+            ],
+            [
                 'age', false,
-                array(
-                    0=>array('name' => 'Pierre', 'age' => '32'),
-                    2=>array('name' => 'Jean', 'age' => '32'),
-                    1=>array('name' => 'Jacques', 'age' => '28'),
-                    3=>array('name' => 'Paul', 'age' => '25'),
-                )
-            ),
-            array(
+                [
+                    0 => ['name' => 'Pierre', 'age' => '32'],
+                    2 => ['name' => 'Jean', 'age' => '32'],
+                    1 => ['name' => 'Jacques', 'age' => '28'],
+                    3 => ['name' => 'Paul', 'age' => '25'],
+                ]
+            ],
+            [
                 'name', false,
-                array(
-                    0=>array('name' => 'Pierre', 'age' => '32'),
-                    3=>array('name' => 'Paul', 'age' => '25'),
-                    2=>array('name' => 'Jean', 'age' => '32'),
-                    1=>array('name' => 'Jacques', 'age' => '28'),
-                )
-            )
-        );
+                [
+                    0 => ['name' => 'Pierre', 'age' => '32'],
+                    3 => ['name' => 'Paul', 'age' => '25'],
+                    2 => ['name' => 'Jean', 'age' => '32'],
+                    1 => ['name' => 'Jacques', 'age' => '28'],
+                ]
+            ]
+        ];
     }
 
     /**
@@ -108,58 +108,58 @@ class StatsTableTest extends \PHPUnit_Framework_TestCase
 
     public function dataProviderForMultipleColumn()
     {
-        return array(
-            array(
-                array('age'=>true,'name'=>true),
-                array(
-                    3=>array('name' => 'Paul', 'age' => '25'),
-                    1=>array('name' => 'Jacques', 'age' => '28'),
-                    2=>array('name' => 'Jean', 'age' => '32'),
-                    0=>array('name' => 'Pierre', 'age' => '32'),
-                )
-            ),
-            array(
-                array('age'=>true,'name'=>false),
-                array(
-                    3=>array('name' => 'Paul', 'age' => '25'),
-                    1=>array('name' => 'Jacques', 'age' => '28'),
-                    0=>array('name' => 'Pierre', 'age' => '32'),
-                    2=>array('name' => 'Jean', 'age' => '32'),
-                )
-            ),
-            array(
-                array('age'=>false,'name'=>true),
-                array(
-                    2=>array('name' => 'Jean', 'age' => '32'),
-                    0=>array('name' => 'Pierre', 'age' => '32'),
-                    1=>array('name' => 'Jacques', 'age' => '28'),
-                    3=>array('name' => 'Paul', 'age' => '25'),
-                )
-            ),
-            array(
-                array('age'=>false,'name'=>false),
-                array(
-                    0=>array('name' => 'Pierre', 'age' => '32'),
-                    2=>array('name' => 'Jean', 'age' => '32'),
-                    1=>array('name' => 'Jacques', 'age' => '28'),
-                    3=>array('name' => 'Paul', 'age' => '25'),
-                )
-            )
-        );
+        return [
+            [
+                ['age' => true,'name' => true],
+                [
+                    3 => ['name' => 'Paul', 'age' => '25'],
+                    1 => ['name' => 'Jacques', 'age' => '28'],
+                    2 => ['name' => 'Jean', 'age' => '32'],
+                    0 => ['name' => 'Pierre', 'age' => '32'],
+                ]
+            ],
+            [
+                ['age' => true,'name' => false],
+                [
+                    3 => ['name' => 'Paul', 'age' => '25'],
+                    1 => ['name' => 'Jacques', 'age' => '28'],
+                    0 => ['name' => 'Pierre', 'age' => '32'],
+                    2 => ['name' => 'Jean', 'age' => '32'],
+                ]
+            ],
+            [
+                ['age' => false,'name' => true],
+                [
+                    2 => ['name' => 'Jean', 'age' => '32'],
+                    0 => ['name' => 'Pierre', 'age' => '32'],
+                    1 => ['name' => 'Jacques', 'age' => '28'],
+                    3 => ['name' => 'Paul', 'age' => '25'],
+                ]
+            ],
+            [
+                ['age' => false,'name' => false],
+                [
+                    0 => ['name' => 'Pierre', 'age' => '32'],
+                    2 => ['name' => 'Jean', 'age' => '32'],
+                    1 => ['name' => 'Jacques', 'age' => '28'],
+                    3 => ['name' => 'Paul', 'age' => '25'],
+                ]
+            ]
+        ];
     }
 
 
     private function _getAdvancedTestData()
     {
         return new StatsTable(
-            array(
-                array('name' => 'Pierre', 'age' => '32', 'order'=>array('nb'=>10,'id'=>'4587956')),
-                array('name' => 'Jacques', 'age' => '28', 'order'=>array('nb'=>10,'id'=>'2479109')),
-                array('name' => 'Jean', 'age' => '32', 'order'=>array('nb'=>1,'id'=>'9210367')),
-                array('name' => 'Paul', 'age' => '25', 'order'=>array('nb'=>24,'id'=>'5214681')),
-                array('name' => 'Celine', 'age' => '25', 'order'=>array('nb'=>24,'id'=>'5214680')),
-            ),
-            array('name' => 'Name', 'age' => 'Age', 'order'=>'Order')
+            [
+                ['name' => 'Pierre', 'age' => '32', 'order' => ['nb' => 10,'id' => '4587956']],
+                ['name' => 'Jacques', 'age' => '28', 'order' => ['nb' => 10,'id' => '2479109']],
+                ['name' => 'Jean', 'age' => '32', 'order' => ['nb' => 1,'id' => '9210367']],
+                ['name' => 'Paul', 'age' => '25', 'order' => ['nb' => 24,'id' => '5214681']],
+                ['name' => 'Celine', 'age' => '25', 'order' => ['nb' => 24,'id' => '5214680']],
+            ],
+            ['name' => 'Name', 'age' => 'Age', 'order' => 'Order']
         );
     }
 
@@ -187,18 +187,18 @@ class StatsTableTest extends \PHPUnit_Framework_TestCase
         };
 
 
-        return array(
-            array(
-                array('order'=>$customSort, 'name'=>'strcmp'),
-                array(
-                    2=>array('name' => 'Jean', 'age' => '32', 'order'=>array('nb'=>1,'id'=>'9210367')),
-                    1=>array('name' => 'Jacques', 'age' => '28', 'order'=>array('nb'=>10,'id'=>'2479109')),
-                    0=>array('name' => 'Pierre', 'age' => '32', 'order'=>array('nb'=>10,'id'=>'4587956')),
-                    4=>array('name' => 'Celine', 'age' => '25', 'order'=>array('nb'=>24,'id'=>'5214680')),
-                    3=>array('name' => 'Paul', 'age' => '25', 'order'=>array('nb'=>24,'id'=>'5214681')),
-                )
-            )
-        );
+        return [
+            [
+                ['order' => $customSort, 'name' => 'strcmp'],
+                [
+                    2 => ['name' => 'Jean', 'age' => '32', 'order' => ['nb' => 1,'id' => '9210367']],
+                    1 => ['name' => 'Jacques', 'age' => '28', 'order' => ['nb' => 10,'id' => '2479109']],
+                    0 => ['name' => 'Pierre', 'age' => '32', 'order' => ['nb' => 10,'id' => '4587956']],
+                    4 => ['name' => 'Celine', 'age' => '25', 'order' => ['nb' => 24,'id' => '5214680']],
+                    3 => ['name' => 'Paul', 'age' => '25', 'order' => ['nb' => 24,'id' => '5214681']],
+                ]
+            ]
+        ];
     }
 
     /**
@@ -226,17 +226,17 @@ class StatsTableTest extends \PHPUnit_Framework_TestCase
             return $a < $b  ? 1 : -1;
         };
 
-        return array(
-            array(
+        return [
+            [
                 'age', $customSort,
-                array(
-                    0=>array('name' => 'Pierre', 'age' => '32', 'order'=>array('nb'=>10,'id'=>'4587956')),
-                    2=>array('name' => 'Jean', 'age' => '32', 'order'=>array('nb'=>1,'id'=>'9210367')),
-                    1=>array('name' => 'Jacques', 'age' => '28', 'order'=>array('nb'=>10,'id'=>'2479109')),
-                    3=>array('name' => 'Paul', 'age' => '25', 'order'=>array('nb'=>24,'id'=>'5214681')),
-                    4=>array('name' => 'Celine', 'age' => '25', 'order'=>array('nb'=>24,'id'=>'5214680')),
-                )
-            )
-        );
+                [
+                    0 => ['name' => 'Pierre', 'age' => '32', 'order' => ['nb' => 10,'id' => '4587956']],
+                    2 => ['name' => 'Jean', 'age' => '32', 'order' => ['nb' => 1,'id' => '9210367']],
+                    1 => ['name' => 'Jacques', 'age' => '28', 'order' => ['nb' => 10,'id' => '2479109']],
+                    3 => ['name' => 'Paul', 'age' => '25', 'order' => ['nb' => 24,'id' => '5214681']],
+                    4 => ['name' => 'Celine', 'age' => '25', 'order' => ['nb' => 24,'id' => '5214680']],
+                ]
+            ]
+        ];
     }
 }
