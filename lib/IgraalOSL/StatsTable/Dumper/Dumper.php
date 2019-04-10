@@ -41,7 +41,7 @@ abstract class Dumper implements DumperInterface
                 break;
 
             case Format::DATETIME:
-                if ($value instanceof \DateTime) {
+                if ($value instanceof \DateTimeInterface) {
                     return $value->format('Y-m-d H:i:s');
                 }
                 break;
